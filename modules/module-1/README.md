@@ -26,15 +26,58 @@ Importantly, Python cannot distinguish between two versions of the same installe
 
 > Some operating systems come with a system-wide installation of Python.  Avoid installing packages into a system installation, as it may require root privileges and may interfere with normal system operations.
 
-### Creating a Virtual Environment
+### Using a Virtual Environment
 
-From the root of this workshop, run the following command:
+Before we create a virtual environment, observe what Python installation you're using with the following command:
+
+```sh
+which python
+```
+
+Without a virtual environment active, this might be a system or user installation of Python.
+
+Next, from the root of this workshop, run the following commands:
 
 ```sh
 python3 -m venv .env
+source .env/Scripts/activate
 ```
 
 > Common conventions for virtual environment directory names include `env`, `venv`, `.env`, and `.venv`.  Regardless of the name you choose, good practice is to make sure the virtual environment directory is ignored in the repository's [`.gitignore`](../../.gitignore) file (or equivalent), to avoid checking it in to source control.
+
+You should notice your command prompt is prefixed with the name of the virtual environment.  For example:
+
+```sh
+(.venv) Alan Pinkert@DESKTOP-IB30L3B ...
+```
+
+Now run `which python` again.  Notice that the path is pointing to the virtual environment you just created.  To demonstrate that the environments are different, let's also install a package using `pip`:
+
+```sh
+pip install requests
+```
+
+Enter the Python interpreter, and try to import the `requests` module.  The command should run successfully.
+
+```py
+>>> import requests
+```
+
+Exit the Python interpreter, and deactivate the virtual environment with:
+
+```sh
+deactivate
+```
+
+Enter the Python interpreter again, and attempt to import `requests`.  Assuming your user or system installation does not have this module, it will fail:
+
+```py
+>>> import requests
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+ModuleNotFoundError: No module named 'requests
+```
+
 
 For more information on virtual environments, see [Python Virtual Environments: A Primer](https://realpython.com/python-virtual-environments-a-primer).
 
