@@ -75,7 +75,7 @@ Enter the Python interpreter again, and attempt to import `requests`.  Assuming 
 >>> import requests
 Traceback (most recent call last):
   File "<stdin>", line 1, in <module>
-ModuleNotFoundError: No module named 'requests
+ModuleNotFoundError: No module named 'requests'
 ```
 
 
