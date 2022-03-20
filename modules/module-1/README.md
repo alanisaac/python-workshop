@@ -96,3 +96,11 @@ docker run -d -p 80:8080 pypiserver/pypiserver:v1.4.2
 ```
 
 When the command is finished, navigate to http://localhost:80 to see the server running.
+
+### Packaging for Multiple Environments
+
+`tox`
+
+### Publishing Packages
+
+`twine`
