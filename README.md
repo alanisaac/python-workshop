@@ -22,8 +22,9 @@ Type "help", "copyright", "credits" or "license" for more information.
 
 ### Tools You Will Need
 
-In a couple places this workshop assumes your source control technology is git.
-_lorem ipsum sin dolor_
+- Git Bash ([install](https://git-scm.com/download/win)): _on windows only_, used as the default shell in this workshop.
+- Docker ([install](https://docs.docker.com/get-docker/)): used to run a local package repository.  
+
 
 ### Prompts
 

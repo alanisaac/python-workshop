@@ -82,3 +82,17 @@ ModuleNotFoundError: No module named 'requests'
 For more information on virtual environments, see [Python Virtual Environments: A Primer](https://realpython.com/python-virtual-environments-a-primer).
 
 > Other package management solutions, like `conda` combine both package installation and virtual environment solutions in one.  This workshop won't go in-depth into `conda`, but for those curious on the differences see [Understanding Conda and Pip](https://www.anaconda.com/blog/understanding-conda-and-pip).
+
+## Creating Packages
+
+In the Python ecosystem, there are multiple ways to create and manage packages.  In this workshop, we'll cover `pip`, but `poetry` (https://python-poetry.org/) and `flit` (https://flit.readthedocs.io/en/latest/) are other options.
+
+### Running a Local Package Repository
+
+Before we publish a package, we'll need a place to publish to.  For this workshop, we'll use a local pypi server run through Docker.  To start the server, run:
+
+```sh
+docker run -d -p 80:8080 pypiserver/pypiserver:v1.4.2
+```
+
+When the command is finished, navigate to http://localhost:80 to see the server running.
