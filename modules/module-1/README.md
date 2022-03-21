@@ -125,6 +125,10 @@ Docstring formats are a matter of personal preference, but considerations includ
 
 In the Python ecosystem, there are multiple ways to create and manage packages.  In this workshop, we'll cover `pip`, but `poetry` (https://python-poetry.org/) and `flit` (https://flit.readthedocs.io/en/latest/) are other options.
 
+The Python Packaging Authority (PyPA) has good documentation on how to [create packages](https://packaging.python.org/en/latest/tutorials/packaging-projects/).
+
+_tutorial: important files, etc._
+
 ### Running a Local Package Repository
 
 Before we publish a package, we'll need a place to publish to.  For this workshop, we'll use a local pypi server run through Docker.  To start the server, run:
@@ -141,4 +145,4 @@ When the command is finished, navigate to http://localhost:80 to see the server 
 
 ### Publishing Packages
 
-`twine`
+`twine` is a [recommended](https://packaging.python.org/en/latest/tutorials/packaging-projects/#uploading-the-distribution-archives) tool used to help publish packages to Python repositories.  It has better security features than basic Python packaging through verified HTTPS connections and package signing, and provides publishing as a separate step. 
