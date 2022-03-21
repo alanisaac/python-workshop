@@ -141,8 +141,8 @@ When the command is finished, navigate to http://localhost:80 to see the server 
 
 ### Packaging for Multiple Environments
 
-`tox`
+`tox` ([GitHub](https://github.com/tox-dev/tox)) is a development automation tool that can help with many common Python tasks.  It's especially useful for testing packages against multiple Python versions, interpreters, and package dependencies.
 
 ### Publishing Packages
 
-`twine` is a [recommended](https://packaging.python.org/en/latest/tutorials/packaging-projects/#uploading-the-distribution-archives) tool used to help publish packages to Python repositories.  It has better security features than basic Python packaging through verified HTTPS connections and package signing, and provides publishing as a separate step. 
+`twine` ([GitHub](https://github.com/pypa/twine)) is a [recommended](https://packaging.python.org/en/latest/tutorials/packaging-projects/#uploading-the-distribution-archives) tool used to help publish packages to Python repositories.  It has better security features than basic Python packaging through verified HTTPS connections and package signing, and provides publishing as a separate step. 
