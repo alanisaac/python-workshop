@@ -1,10 +1,10 @@
 # Python Workshop
 
-This workshop is divided into three modules:
+This workshop is divided into three modules, each covering different topics:
 
-- **Module 1**:
-- **Module 2**:
-- **Module 3**:
+- **Module 1 | Environment Setup**: how to set up your environment for Python development and packaging, including helpful tools
+- **Module 2 | Coding Patterns and Practices**: a discussion of coding styles and useful language features in Python
+- **Module 3 | Extensions**: additional topics in asynchronous programming and common gotchas
 
 
 ## Before We Get Started
