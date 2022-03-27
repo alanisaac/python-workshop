@@ -36,3 +36,6 @@ Docstring formats are a matter of personal preference, but considerations includ
 - **IDE Support**: make sure your preferred format is supported by the range of IDEs in your organization.
 - **Documentation Generators**: if you plan to create published documentation, make sure your documentation generator (like [Sphinx](https://www.sphinx-doc.org/en/master/)) supports your format.
 
+## Type Checking
+
+_TODO_

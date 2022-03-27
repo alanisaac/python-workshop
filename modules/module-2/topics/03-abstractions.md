@@ -166,6 +166,6 @@ However, there are a few cases where protocols are more useful:
         print(formatted)
     ```
 
-## Typevars, Generics, and Overloads
+## Collection Abstractions
 
 _TODO_

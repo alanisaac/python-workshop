@@ -102,15 +102,19 @@ class Factory:
         return Service(self)
 ```
 
-## Postponed Evaluation
+### Postponed Evaluation
 
 If you find that you are using many forward references in a module, there is another alternative.  In Python 3.7, [PEP-563](https://peps.python.org/pep-0563/) introduced a special import that effectively turns all function annotations into strings:
 
 ```py
 from __future__ import annotations
-``` 
+```
 
 By using this import on a module, you no longer have to manage individual forward references.
+
+## Typevars, Generics, and Overloads
+
+_TODO_
 
 ## Missing Type Hints
 Occasionally, you may find certain 3rd party libraries do not have type hints.  `requests`, for example, is a notable popular package that does not ([GitHub](https://github.com/psf/requests/issues/3855)).  In some cases, other open source developers will create type hint packages to supplement these libraries with typing stubs.

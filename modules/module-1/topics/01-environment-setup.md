@@ -83,3 +83,7 @@ ModuleNotFoundError: No module named 'requests'
 For more information on virtual environments, see [Python Virtual Environments: A Primer](https://realpython.com/python-virtual-environments-a-primer).
 
 > Other package management solutions, like `conda` combine both package installation and virtual environment solutions in one.  This workshop won't go in-depth into `conda`, but for those curious on the differences see [Understanding Conda and Pip](https://www.anaconda.com/blog/understanding-conda-and-pip).
+
+## IDE Setup
+
+_TODO_
