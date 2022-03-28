@@ -1,6 +1,14 @@
 # Testing
 
-## Testing Basics
+## Test Runners
+
+There are a few popular test runners in the Python ecosystem:
+
+- `unittest` is both the testing framework that comes with Python as well as the default test runner.  It provides basic functionality to organize tests in test classes derived from `unittest.TestCase`.  Other test runners typically can run `unittest` test cases.
+- `pytest` ([GitHub](https://github.com/pytest-dev/pytest)) is an alternative test runner with a broad set of features that allows for plain function tests and the use of Python's `assert` statement.
+- `nose2` ([GitHub](https://github.com/nose-devs/nose2)) is another test runner, very similar to `pytest` but somewhat less popular.
+
+For the purposes of this workshop, we'll explore testing using `pytest`.
 
 _TODO_
 
