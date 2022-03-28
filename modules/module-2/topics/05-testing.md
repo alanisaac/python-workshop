@@ -33,6 +33,8 @@ _TODO_
 ### coverage
 The `coverage` package ([GitHub](https://github.com/nedbat/coveragepy)) provides code coverage support for Python.  It can measure line or branch coverage, and supports outputs in a variety of standard formats, including HTML, XML (Cobertura), JSON, and LCOV, allowing it to integrate with most popular CI tools.
 
+When using `pytest`, it is recommended to use the `pytest-cov` plugin ([GitHub](https://github.com/pytest-dev/pytest-cov)) as opposed to using `coverage` directly.  `pytest-cov` is a wrapper around `coverage` but slightly better compatibility and supports collecting coverage while using `pytest-xdist` as well.
+
 ### diff_cover
 While `coverage` provides overall code coverage reports, it can also be useful to understand coverage changes as a result of a pull request (or "merge request", "diff", etc. depending on your source control tool of choice).
 
