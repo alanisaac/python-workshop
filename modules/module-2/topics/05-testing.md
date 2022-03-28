@@ -10,6 +10,8 @@ There are a few popular test runners in the Python ecosystem:
 
 For the purposes of this workshop, we'll explore testing using `pytest`.
 
+> `pytest` has a [huge array](https://docs.pytest.org/en/7.0.x/reference/plugin_list.html) of plugins.  We'll cover a few important ones in this workshop, but if there's a specific testing use case you neeed to cover, it's a good idea to check on whether there's a `pytest` plugin for it.
+
 _TODO_
 
 ### Parallelizing Execution
