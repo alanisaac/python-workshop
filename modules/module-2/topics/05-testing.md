@@ -12,6 +12,18 @@ For the purposes of this workshop, we'll explore testing using `pytest`.
 
 _TODO_
 
+### Parallelizing Execution
+
+For unit tests, by default `pytest` will run them sequentially.  If your test cases are thread-safe, you might want to parallelize execution of those tests.  This can help speed up tests both locally, and in CI pipelines.
+
+The `pytest-xdist` plugin ([GitHub](https://github.com/pytest-dev/pytest-xdist)) allows you to run tests in parallel.  It will run tests in parallel according to the number of CPU cores with the command:
+
+```sh
+pytest -n auto
+```
+
+> `pytest-parallel` ([GitHub](https://github.com/browsertron/pytest-parallel)) is a newer plugin that can additionally handle testing concurrency, if needed.
+
 ## Mocking & Patching
 
 _TODO_
