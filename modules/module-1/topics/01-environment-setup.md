@@ -2,6 +2,10 @@
 
 This first topic covers how to set up your local environment for Python development, including virtual environments, and IDE settings.
 
+## Python Environments
+
+_TODO: pyenv_
+
 ## Virtual Environments
 
 In Python, it's common best practice to use **virtual environments**: isolated environments for Python projects.  But why is that isolation needed in the first place?
@@ -96,7 +100,7 @@ If you prefer text editors, there are several plugins that can enhance the Pytho
 ### PyCharm
 [PyCharm](https://www.jetbrains.com/pycharm/) is a paid IDE built by JetBrains, tailored specifically for Python development.
 
-_TODO_
+_TODO: PyCharm setup_
 
 ### VS Code
 [VS Code](https://code.visualstudio.com/) is a free, cross-language IDE built by Microsoft.  It boasts a wide variety of plugins, which can enhance the development experience.
@@ -128,5 +132,10 @@ Other useful Python-specific plugins include:
 - Support for [jinja templates](https://marketplace.visualstudio.com/items?itemName=samuelcolvin.jinjahtml).
 - [Docstring generation](https://marketplace.visualstudio.com/items?itemName=njpwerner.autodocstring).
 - Python [environment management](https://marketplace.visualstudio.com/items?itemName=donjayamanne.python-environment-manager)
+
+#### Running & Debugging
+
+- Running code
+- Running tests
 
 _TODO_
