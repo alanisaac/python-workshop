@@ -86,4 +86,47 @@ For more information on virtual environments, see [Python Virtual Environments: 
 
 ## IDE Setup
 
+There are many ways to work with Python code.  This workshop will cover two setup for two popular IDEs: VS Code and PyCharm.
+
+If you prefer text editors, there are several plugins that can enhance the Python editing experience:
+
+- [vim and Python: a match made in heaven](https://realpython.com/vim-and-python-a-match-made-in-heaven/)
+- [Python Programming in Emacs](https://www.emacswiki.org/emacs/PythonProgrammingInEmacs)
+
+### PyCharm
+[PyCharm](https://www.jetbrains.com/pycharm/) is a paid IDE built by JetBrains, tailored specifically for Python development.
+
+_TODO_
+
+### VS Code
+[VS Code](https://code.visualstudio.com/) is a free, cross-language IDE built by Microsoft.  It boasts a wide variety of plugins, which can enhance the development experience.
+
+#### Plugins and Settings
+
+The primary VS Code plugin you'll need for Python development is [Python](https://marketplace.visualstudio.com/items?itemName=ms-python.python).  By default, this installs Pylance, Microsoft's Python language server, as well as Jupyter.
+
+There are many settings available with the Python plugin that can control the tools used for linting and analysis.  For the purposes of the workshop, we'll enable the following settings for the Python plugin:
+
+- `python.formatting.provider`: choose the provider for formatting code (defaults to `autopep8`, we'll experiment with `black`)
+- `python.linting.flake8Enabled`: enables `flake8` linting
+- `python.linting.mypyEnabled`: enables `mypy` type checking
+- `python.linting.pylintEnabled`: enables `pylint` linting
+
+Combined, this produces a `settings.json` [file](../../../.vscode/settings.json) with:
+
+```json
+{
+    "python.formatting.provider": "black",
+    "python.linting.flake8Enabled": true,
+    "python.linting.mypyEnabled": true,
+    "python.linting.pylintEnabled": true
+}
+```
+
+Other useful Python-specific plugins include:
+- Additional support for static type checkers like [mypy](https://marketplace.visualstudio.com/items?itemName=matangover.mypy) and [pyright](https://marketplace.visualstudio.com/items?itemName=ms-pyright.pyright&ssr=false).
+- Support for [jinja templates](https://marketplace.visualstudio.com/items?itemName=samuelcolvin.jinjahtml).
+- [Docstring generation](https://marketplace.visualstudio.com/items?itemName=njpwerner.autodocstring).
+- Python [environment management](https://marketplace.visualstudio.com/items?itemName=donjayamanne.python-environment-manager)
+
 _TODO_
