@@ -19,8 +19,26 @@ For this workshop we'll refer to both as "package" but clarify if the type can't
 - `pyproject.toml` ([link](../../../pyproject.toml)) contains metadata about the build of your project, like the packages necessary for a build and the build system to use.
 - `setup.cfg` ([link](../../../setup.cfg)) contains metadata describing the distribution package to build, like the name, version, and where to find import packages.
 
+Open up the links above to explore these files in more detail:  
+
+- Note how in the `[options]` section, the distribution package is set up to `find:` import packages in the `src` folder.  This is a commonly used pattern in Python repositories called the "[`src` layout](https://setuptools.pypa.io/en/latest/userguide/declarative_config.html#using-a-src-layout)".
+
 > In more advanced scenarios, you can create package metadata programmatically using a `setup.py` file instead of `setup.cfg`.  Best practice is to do this only when absolutely necessary, so it won't be covered in this workshop.  For more info, see the guide to [different metadata configurations](https://packaging.python.org/en/latest/tutorials/packaging-projects/#configuring-metadata).
 
+### Defining Package Dependencies
+
+Our package uses `pydantic`, but it's not listed as a dependency -- let's fix that.  Package dependencies are defined using the `install_requires` option in metadata.  Copy and paste the following into the `setup.cfg` file, under the `[options]` section:
+
+```py
+install_requires =
+    pydantic >= 1.7
+```
+
+_TODO: why this version? how does version specification work?_
+
+### Creating a Build
+
+Since we have the package files already created, we can create a build.
 
 _TODO_
 
