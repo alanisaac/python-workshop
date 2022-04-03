@@ -34,7 +34,9 @@ install_requires =
     pydantic >= 1.7
 ```
 
-_TODO: why this version? how does version specification work?_
+Note how we're specifying a dependency version greater than or equal to `1.7`.  Python package versioning and the syntax to specify dependency versions is defined by [PEP-440](https://peps.python.org/pep-0440/).
+
+Later on, we'll see how to test that different versions of a dependency work with our library.
 
 ### Creating a Build
 
