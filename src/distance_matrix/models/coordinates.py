@@ -16,9 +16,3 @@ class Coordinates(BaseModel):
         if -180 <= v <= 180:
             return v
         raise ValueError('Longitude must be between -180 and 180 inclusive')
-
-
-invalid_coordinates = Coordinates(
-    latitude=-360,
-    longitude=400,
-)
