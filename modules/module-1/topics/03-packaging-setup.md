@@ -5,7 +5,22 @@ In the Python ecosystem, there are multiple ways to create and manage packages. 
 
 ## Package Creation
 
-The Python Packaging Authority (PyPA) has good documentation on how to [create packages](https://packaging.python.org/en/latest/tutorials/packaging-projects/).
+The Python Packaging Authority (PyPA) has good documentation on how to [create packages](https://packaging.python.org/en/latest/tutorials/packaging-projects/).  What follows is an abbreviated and adapted version of that tutorial.
+
+Note that there are two things in the Python ecosystem called "packages":
+
+- **Import packages** ([glossary](https://packaging.python.org/en/latest/glossary/#term-Import-Package)) are collections of modules.  _Essentially_, a folder with an `__init__.py` file.
+- **Distribution packages** ([glossary](https://packaging.python.org/en/latest/glossary/#term-Distribution-Package)) are archived files that you publish and install.  A Python distribution package generally contains one or more import packages.
+
+For this workshop we'll refer to both as "package" but clarify if the type can't be inferred from context.
+
+### Important Files
+
+- `pyproject.toml` ([link](../../../pyproject.toml)) contains metadata about the build of your project, like the packages necessary for a build and the build system to use.
+- `setup.cfg` ([link](../../../setup.cfg)) contains metadata describing the distribution package to build, like the name, version, and where to find import packages.
+
+> In more advanced scenarios, you can create package metadata programmatically using a `setup.py` file instead of `setup.cfg`.  Best practice is to do this only when absolutely necessary, so it won't be covered in this workshop.  For more info, see the guide to [different metadata configurations](https://packaging.python.org/en/latest/tutorials/packaging-projects/#configuring-metadata).
+
 
 _TODO_
 
