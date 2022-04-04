@@ -1,6 +1,18 @@
-from unittest import TestCase
+import pytest
+from pydantic import ValidationError
+
+from distance_matrix.models.coordinates import Coordinates
 
 
-class TestCoordinates(TestCase):
-    def test_placeholder(self):
-        pass
+@pytest.mark.parametrize(
+    "latitude,longitude",
+    [
+        (-1000, 0),
+        (1000, 0),
+        (0, -1000),
+        (0, 1000)
+    ]
+)
+def test_invalid_coordinates_raises_error(latitude, longitude):
+    with pytest.raises(ValidationError):
+        _ = Coordinates(latitude=latitude, longitude=longitude)

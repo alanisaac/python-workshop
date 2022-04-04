@@ -2,17 +2,77 @@
 
 In the Python ecosystem, there are multiple ways to create and manage packages.  In this workshop, we'll cover `pip`, but `poetry` (https://python-poetry.org/) and `flit` (https://flit.readthedocs.io/en/latest/) are other options.
 
-
-## Package Creation
-
-The Python Packaging Authority (PyPA) has good documentation on how to [create packages](https://packaging.python.org/en/latest/tutorials/packaging-projects/).  What follows is an abbreviated and adapted version of that tutorial.
-
 Note that there are two things in the Python ecosystem called "packages":
 
 - **Import packages** ([glossary](https://packaging.python.org/en/latest/glossary/#term-Import-Package)) are collections of modules.  _Essentially_, a folder with an `__init__.py` file.
 - **Distribution packages** ([glossary](https://packaging.python.org/en/latest/glossary/#term-Distribution-Package)) are archived files that you publish and install.  A Python distribution package generally contains one or more import packages.
 
 For this workshop we'll refer to both as "package" but clarify if the type can't be inferred from context.
+
+## Repository Layout
+
+Before we start on creating packages, it's worth discussing the layout of the repository.  There are two common patterns for repositories designed for Python packaging:
+
+### The `src` Layout
+
+The [src-layout](https://setuptools.pypa.io/en/latest/userguide/package_discovery.html#src-layout) places one or more packages underneath a `src` directory, like so:
+
+```
+project_root_directory
+├── pyproject.toml
+├── setup.cfg  # or setup.py
+├── ...
+└── src/
+    └── mypkg/
+        ├── __init__.py
+        ├── ...
+        └── mymodule.py
+```
+
+This package layout is easier for packaging, as there's less chance that you accidentally distribute files in your package that you don't mean to.  However, it's harder for dealing with the Python REPL and for testing, as the default `PYTHONPATH` will not contain your package.
+
+### The Flat Layout
+
+The [flat-layout](https://setuptools.pypa.io/en/latest/userguide/package_discovery.html#flat-layout) places the main package under the repository root directory, like so:
+
+```
+project_root_directory
+├── pyproject.toml
+├── setup.cfg  # or setup.py
+├── ...
+└── mypkg/
+    ├── __init__.py
+    ├── ...
+    └── mymodule.py
+```
+
+This makes it very easy to use the REPL, but packaging may be more error-prone.
+
+### Which to Choose?
+
+This is still under active debate in the Python community, though `src` has grown in popularity.  Here are examples of each in popular packages:
+
+Flat Layouts:
+- [requests](https://github.com/psf/requests)
+- [numpy](https://github.com/numpy/numpy)
+
+Src Layouts:
+- [dateutil](https://github.com/dateutil/dateutil)
+- [cryptography](https://github.com/pyca/cryptography)
+- [flask](https://github.com/pallets/flask)
+- [pytest](https://github.com/pytest-dev/pytest)
+
+
+For more on the benefits of the `src` layout, [see this blog post](https://blog.ionelmc.ro/2014/05/25/python-packaging/#the-structure), and this follow-up.
+
+See also this [GitHub discussion](https://github.com/pypa/packaging.python.org/issues/320#issuecomment-495990983).
+
+
+This repository uses the `src` layout.  While it's a little less accessible for beginners, it's useful to understand the benefits and how to work in this layout.
+
+## Package Creation
+
+The Python Packaging Authority (PyPA) has good documentation on how to [create packages](https://packaging.python.org/en/latest/tutorials/packaging-projects/).  What follows is an abbreviated and adapted version of that tutorial.
 
 ### Important Files
 
@@ -21,7 +81,7 @@ For this workshop we'll refer to both as "package" but clarify if the type can't
 
 Open up the links above to explore these files in more detail:  
 
-- Note how in the `[options]` section, the distribution package is set up to `find:` import packages in the `src` folder.  This is a commonly used pattern in Python repositories called the "[`src` layout](https://setuptools.pypa.io/en/latest/userguide/declarative_config.html#using-a-src-layout)".
+- Note how in the `[options]` section, the distribution package is set up to `find:` import packages in the `src` folder, as we're using the `src` layout. 
 
 > In more advanced scenarios, you can create package metadata programmatically using a `setup.py` file instead of `setup.cfg`.  Best practice is to do this only when absolutely necessary, so it won't be covered in this workshop.  For more info, see the guide to [different metadata configurations](https://packaging.python.org/en/latest/tutorials/packaging-projects/#configuring-metadata).
 
@@ -146,5 +206,7 @@ You can then delete the scratch environment at `.env`.
 ## Packaging for Multiple Environments
 
 `tox` ([GitHub](https://github.com/tox-dev/tox)) is a development automation tool that can help with many common Python tasks.  It's especially useful for testing packages against multiple Python versions, interpreters, and package dependencies.
+
+`tox` also runs tests against a packaged and installed version of your code, so it can detect packaging problems as well.
 
 _TODO: Example_
