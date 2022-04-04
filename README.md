@@ -23,8 +23,7 @@ Type "help", "copyright", "credits" or "license" for more information.
 ### Tools You Will Need
 
 - Git Bash ([install](https://git-scm.com/download/win)): _on windows only_, used as the default shell in this workshop.
-- Docker ([install](https://docs.docker.com/get-docker/)): used to run a local package repository.  
-
+- Docker ([install](https://docs.docker.com/get-docker/)): used to run a local package repository.  Note that Docker recently changed their terms of service to a subscription model for larger companies - in this workshop it is used educationally, but please make sure you're in compliance with the license if you use it beyond this workshop.
 
 ### Prompts
 

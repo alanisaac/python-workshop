@@ -29,7 +29,7 @@ Open up the links above to explore these files in more detail:
 
 Our package uses `pydantic`, but it's not listed as a dependency -- let's fix that.  Package dependencies are defined using the `install_requires` option in metadata.  Copy and paste the following into the `setup.cfg` file, under the `[options]` section:
 
-```py
+```toml
 install_requires =
     pydantic >= 1.7
 ```
@@ -42,25 +42,106 @@ Later on, we'll see how to test that different versions of a dependency work wit
 
 Since we have the package files already created, we can create a build.
 
-_TODO_
+First, let's make sure we have the most up-to-date version of the build package.  In the virtual environment for this repository, run the following command:
+
+```sh
+python -m pip install --upgrade build
+```
+
+Next, we'll build the package.  In the virtual environment for this repository, run the following command:
+
+```sh
+python -m build
+```
+
+This command should output a lot of text and once completed should generate two files in the `dist` directory:
+
+- a `.tar.gz` file, which is a [source archive](https://packaging.python.org/en/latest/glossary/#term-Source-Archive)
+- a `.whl` file, which is a [built distribution](https://packaging.python.org/en/latest/glossary/#term-Built-Distribution)
+
+> Newer pip versions preferentially install built distributions, but will fall back to source archives if needed. Best practice is to publish both.
 
 ## Package Publishing
 
 ### Running a Local Package Repository
 
-Before we publish a package, we'll need a place to publish to.  For this workshop, we'll use a local pypi server run through Docker.  To start the server, run:
+Before we publish a package, we'll need a place to publish to.  There is a [test PyPI server](https://packaging.python.org/en/latest/guides/using-testpypi/) that you can use to test out publishing packages publically.  However, it requires registering user accounts and periodically gets pruned.
+
+For the purposes of this workshop, we'll run a local PyPI server through Docker and `pypiserver` ([GitHub](https://github.com/pypiserver/pypiserver)).  
+
+> Don't have Docker installed?  [Get Docker](https://docs.docker.com/get-docker/).
+
+To start the server, run:
 
 ```sh
-docker run -d -p 80:8080 pypiserver/pypiserver:v1.4.2
+docker run -d -p 80:8080 pypiserver/pypiserver:v1.4.2 -P . -a . /data/packages
 ```
 
-When the command is finished, navigate to http://localhost:80 to see the server running.
+> The `-P .` and `-a .` flags disable authentication for everything in `pypiserver` so we don't need to worry about it in this workshop.  Never run it this way in a real scenario.
+
+When the command is finished, navigate to http://localhost:80 to see the server running.  If you click on one of the links to the package index, you can see it starts out empty.
 
 ### Publishing Using Twine
 
 `twine` ([GitHub](https://github.com/pypa/twine)) is a [recommended](https://packaging.python.org/en/latest/tutorials/packaging-projects/#uploading-the-distribution-archives) tool used to help publish packages to Python repositories.  It has better security features than basic Python packaging through verified HTTPS connections and package signing, and provides publishing as a separate step. 
 
-_TODO: Example_
+Let's install `twine`.  In the virtual environment for this repository, run the following command:
+
+```sh
+python -m pip install --upgrade twine
+```
+
+Next we'll publish our package.  We'll run the upload step with the `--verbose` flag in case there are any errors.  In the virtual environment for this repository, run the following command:
+
+```sh
+python -m twine upload --verbose --repository-url http://localhost:80 dist/* 
+```
+
+The command will prompt you for a username and password, you can keep these blank and press enter.
+
+If everything was successful, you should see two upload progress bars.  Note that if you try to upload it again, it'll return a `409 Conflict` response: by default `pypiserver` does not allow overwriting packages.
+
+Now navigate to the simple package index at http://localhost:80/simple/.  You should see the `distance-matrix` package in the index.
+
+### Installing From the Local Server
+
+Now let's try installing our package we just uploaded.  To start, let's make a scratch virtual environment so we don't modify the main one in our workspace.
+
+For kicks, let's use the _other_ common naming convention for virtual environments: `.venv`.  Run the commands:
+
+```sh
+python -m venv .venv
+source .venv/Scripts/activate
+```
+
+To be sure you're in the right (clean) environment you can run `pip list` and make sure you only see `pip` and `setuptools`.
+
+Now let's install the package:
+
+```sh
+pip install --index-url http://localhost:80/simple/ distance-matrix
+```
+
+If all went well, you should see the line:
+
+```sh
+Successfully installed distance-matrix-0.0.1
+```
+
+For proof, we can enter the Python interpreter and import the library:
+
+```py
+from distance_matrix.models.coordinates import Coordinates
+c = Coordinates(40, 180)
+```
+
+Finally, exit the interpreter and re-activate our original env:
+
+```sh
+source .env/Scripts/activate
+```
+
+You can then delete the scratch environment at `.env`.
 
 ## Packaging for Multiple Environments
 
