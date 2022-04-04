@@ -114,7 +114,6 @@ There are many settings available with the Python plugin that can control the to
 - `python.formatting.provider`: choose the provider for formatting code (defaults to `autopep8`, we'll experiment with `black`)
 - `python.linting.flake8Enabled`: enables `flake8` linting
 - `python.linting.mypyEnabled`: enables `mypy` type checking
-- `python.linting.pylintEnabled`: enables `pylint` linting
 
 Combined, this produces a `settings.json` [file](../../../.vscode/settings.json) with:
 
@@ -123,7 +122,6 @@ Combined, this produces a `settings.json` [file](../../../.vscode/settings.json)
     "python.formatting.provider": "black",
     "python.linting.flake8Enabled": true,
     "python.linting.mypyEnabled": true,
-    "python.linting.pylintEnabled": true
 }
 ```
 
