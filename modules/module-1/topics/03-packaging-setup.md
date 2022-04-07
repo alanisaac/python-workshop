@@ -81,6 +81,7 @@ The Python Packaging Authority (PyPA) has good documentation on how to [create p
 Open up the links above to explore these files in more detail:  
 
 - Note how in the `[options]` section, the distribution package is set up to `find:` import packages in the `src` folder, as we're using the `src` layout. 
+- Think the syntax for `package_dir` looks funny?  `package_dir` is actually a mapping, and we're [mapping the empty string](https://docs.python.org/2/distutils/setupscript.html#listing-whole-packages) to `src`.
 
 > In more advanced scenarios, you can create package metadata programmatically using a `setup.py` file instead of `setup.cfg`.  Best practice is to do this only when absolutely necessary, so it won't be covered in this workshop.  For more info, see the guide to [different metadata configurations](https://packaging.python.org/en/latest/tutorials/packaging-projects/#configuring-metadata).
 
