@@ -69,12 +69,60 @@ See [this article](https://www.infoworld.com/article/3575079/4-python-type-check
 
 For the purposes of this workshop, we'll use `mypy`, but it's worth exploring the other options if the features sound interesting or `mypy` doesn't meet your needs.
 
-## Persisting Development Requirements
-Static analysis and testing tools are added for development purposes, but shouldn't be packaged along with your code.
+## Persisting Requirements
+Static analysis and testing tools are added for development purposes.  But without any additional tooling, the more you add the more difficult it is for others to recreate the same development environment.  Newer versions of `mypy` or `flake8`, for examplee, can have different rules they apply.
 
-It's common practice to persist development requirements as well as package requirements in the reepository.
+It's common practice to persist development requirements in the repository they can be installed easily and in a reproducible way.  A simple way to do that is with a `requirements.txt` file.
 
-Pipenv ([GitHub](https://github.com/pypa/pipenv)) is another great tool to help with managing package requirements, and specifically handles a separation between dev requirements and package requirements.  For now, we'll stick with using `requirements.txt` files.
+`requirements.txt` is simply a list of depenencies and versions.  Rather than individually running `pip install` for each dependency in a virtual environment, we can `pip install -r requirements.txt` to install them all at once.
 
-_TODO_
+The simple way to create a `requirements.txt` file is to run:
+
+```sh
+pip freeze > requirements.txt
+```
+
+Open the created file and you'll see all the dependencies installed into the current environment listed.  That includes top-level dependencies as well as child dependencies.
+
+There are two problems though, with plain requirements files.
+
+Take our requirements file that includes both top-level and child dependencies.  If we delete or upgrade top-level dependencies, how do we know their children are still correct?  Consider the following example:
+
+- We care about dependency `foo`, which depends `bar`
+- We install it and create a `requirements.txt` file with both `foo` and `bar`
+- The next version of `foo` depends on `baz`, not `bar`
+- When we upgrade `foo`, we're on the hook to remove `bar` from our file if we no longer need it
+
+You might think a solution is to only specify top-level dependencies by editing the file manually, or using a tool like `pip-chill` ([GitHub](https://github.com/rbanffy/pip-chill)).  But we've created another problem.
+
+If we only specify top-level dependencies, when two different developers install them at different times, there's the potential for child dependencies to have different versions.
+
+> For a more detailed explanation of these issues, see [this article](https://modelpredict.com/wht-requirements-txt-is-not-enough).
+
+There are many tools that can help with this problem.  This workshop will cover the simplest one: `pip-tools`.
+
+> Pipenv ([GitHub](https://github.com/pypa/pipenv)) is another great tool to help with managing package requirements, and specifically handles a separation between dev requirements and package requirements.  This workshop won't cover it, but check it out!
+
+To install `pip-tools`:
+
+```sh
+pip install pip-tools
+```
+
+We'll also create a `dev-requirements.in` file.  This will simply be a list of development requirements:
+
+```ini
+black
+isort
+flake8
+mypy
+```
+
+Now run the `pip-compile` command against that file:
+
+```sh
+pip-compile dev-requirements.in
+```
+
+Note how a `dev-requirements.txt` file is also created alongside it, that has a number of version-pinned dependencies with their origins listed.  Now we can manage our top-level dependencies in `dev-requirements.in`, while safely installing pinned versions from `requirements.txt`.
 
