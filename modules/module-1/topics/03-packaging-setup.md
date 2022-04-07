@@ -203,11 +203,13 @@ source .env/Scripts/activate
 
 You can then delete the scratch environment at `.env`.
 
-## Packaging for Multiple Environments
+## Automating With Tox
 
 `tox` ([GitHub](https://github.com/tox-dev/tox)) is a development automation tool that can help with many common Python tasks.  It's especially useful for testing packages against multiple Python versions, interpreters, and package dependencies.
 
 `tox` also runs tests against a packaged and installed version of your code, so it can detect packaging problems as well.
+
+> Another popular option for automation is `make`.  You can also combine the two, running tox commands through a `makefile`, if you like the capabilities of `tox` but prefer the interface of `make`.
 
 To start, let's install `tox`.  In the virtual environment for this repository, run the following command:
 
@@ -225,6 +227,90 @@ Note that:
 - `tox` caches the virtual environment used, so subsequent runs should be much faster.
 - However, if you change dependencies, you'll want to force the environment to be recreated.  You can do that with the `--recreate` [flag](https://tox.wiki/en/3.24.5/example/basic.html?highlight=recreate#forcing-re-creation-of-virtual-environments).
 
+### Analysis Environments
 
+In topic 2, we covered many different forms of static code analysis.  We can use `tox` is to bring together automation for these different tools.
 
-_TODO: Example_
+Recall that we created a `dev-requirements.txt` file based on the tools we added.  Let's create a new environment in our `tox.ini` file that will run these tools for us.  Copy and paste the following section into the bottom of `tox.ini`:
+
+```toml
+[testenv:lint]
+skip_install = true
+deps =
+  flake8
+  isort
+  black
+
+commands =
+  flake8 src tests
+  isort src tests --check --diff
+  black src tests --check --diff
+```
+
+Then run the environment with:
+
+```sh
+tox -e lint
+```
+
+Note how for linting, we skipped the installation of the package with `skip_install = true`.  It's not useful to build and install an actual package in order to fix code style errors.  That's _not_ the case with type checkers like `mypy`, since they need to understand the types from dependencies.
+
+We can create another environment for `mypy`:
+
+```toml
+[testenv:types]
+deps =
+  pytest
+  mypy
+
+commands =
+  mypy src tests
+```
+
+Finally, we can chain all of these together by adding them to the `envlist`:
+
+```toml
+envlist = lint,types,py38
+```
+
+Now running `tox` alone will run all of the environments in sequence.
+
+### Dev Environment
+We can also use `tox` to create our development virtual environment.  Consider the following `tox` environment:
+
+```toml
+[testenv:dev]
+envdir = {posargs:.venv}
+recreate = True
+deps =
+    {[testenv]deps}
+    {[testenv:lint]deps}
+    {[testenv:types]deps}
+download = True
+usedevelop = True
+commands =
+    python --version
+```
+
+In the environment above we:
+- Place it by default in the .venv folder (with the option to pass positional args instead)
+- Recreate the full environment every time (no caching)
+- Install the deps of all our other environments
+- Use the [`download` flag](https://tox.wiki/en/latest/config.html#conf-download) to upgrade basic Python tools to latest
+- Use the [`usedevelop` flag](https://tox.wiki/en/latest/config.html#conf-usedevelop): our source code is still "installed" into the environment but using symbolic links to the source files, not a packaged build
+
+This means the entire setup for our development virtual environment is created with:
+
+```sh
+python -m pip install tox
+tox -e dev
+source .venv/Scripts/activate
+```
+
+### Other Examples
+
+Many open source projects use `tox` to automate testing against multiple Python versions or dependencies.  A great example of `tox` usage is in `twine`.  Check out:
+- The structure of the `twine` [`tox.ini` file](https://github.com/pypa/twine/blob/main/tox.ini)
+- The commands to run in the `twine` [contributing guide](https://twine.readthedocs.io/en/latest/contributing.html)
+
+Most core [Python Packaging Authority libraries](https://github.com/pypa) take advantage of `tox` as well.
