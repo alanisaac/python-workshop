@@ -96,6 +96,12 @@ install_requires =
 
 Note how we're specifying a dependency version greater than or equal to `1.7`.  Python package versioning and the syntax to specify dependency versions is defined by [PEP-440](https://peps.python.org/pep-0440/).
 
+We can also use `pip-compile` to create a `requirements.txt` file, just like we did for `dev-requirements.txt`:
+
+```sh
+pip-compile setup.cfg
+```
+
 Later on, we'll see how to test that different versions of a dependency work with our library.
 
 ### Creating a Build
@@ -237,15 +243,15 @@ Recall that we created a `dev-requirements.txt` file based on the tools we added
 [testenv:lint]
 skip_install = true
 deps =
-  flake8
-  isort
-  black
+  -r dev-requirements.txt
 
 commands =
   flake8 src tests
   isort src tests --check --diff
   black src tests --check --diff
 ```
+
+Note how we can use the `dev-requirements` file we created earlier as one way to specify dependencies.
 
 Then run the environment with:
 
