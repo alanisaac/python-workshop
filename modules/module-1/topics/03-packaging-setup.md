@@ -89,7 +89,7 @@ Open up the links above to explore these files in more detail:
 
 Our package uses `pydantic`, but it's not listed as a dependency -- let's fix that.  Package dependencies are defined using the `install_requires` option in metadata.  Copy and paste the following into the `setup.cfg` file, under the `[options]` section:
 
-```toml
+```ini
 install_requires =
     pydantic >= 1.7
 ```
@@ -233,7 +233,7 @@ In topic 2, we covered many different forms of static code analysis.  We can use
 
 Recall that we created a `dev-requirements.txt` file based on the tools we added.  Let's create a new environment in our `tox.ini` file that will run these tools for us.  Copy and paste the following section into the bottom of `tox.ini`:
 
-```toml
+```ini
 [testenv:lint]
 skip_install = true
 deps =
@@ -257,7 +257,7 @@ Note how for linting, we skipped the installation of the package with `skip_inst
 
 We can create another environment for `mypy`:
 
-```toml
+```ini
 [testenv:types]
 deps =
   pytest
@@ -269,7 +269,7 @@ commands =
 
 Finally, we can chain all of these together by adding them to the `envlist`:
 
-```toml
+```ini
 envlist = lint,types,py38
 ```
 
@@ -278,7 +278,7 @@ Now running `tox` alone will run all of the environments in sequence.
 ### Dev Environment
 We can also use `tox` to create our development virtual environment.  Consider the following `tox` environment:
 
-```toml
+```ini
 [testenv:dev]
 envdir = {posargs:.venv}
 recreate = True
