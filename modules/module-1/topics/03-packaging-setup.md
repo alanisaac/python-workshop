@@ -67,7 +67,6 @@ For more on the benefits of the `src` layout, [see this blog post](https://blog.
 
 See also this [GitHub discussion](https://github.com/pypa/packaging.python.org/issues/320#issuecomment-495990983).
 
-
 This repository uses the `src` layout.  While it's a little less accessible for beginners, it's useful to understand the benefits and how to work in this layout.
 
 ## Package Creation
@@ -208,5 +207,23 @@ You can then delete the scratch environment at `.env`.
 `tox` ([GitHub](https://github.com/tox-dev/tox)) is a development automation tool that can help with many common Python tasks.  It's especially useful for testing packages against multiple Python versions, interpreters, and package dependencies.
 
 `tox` also runs tests against a packaged and installed version of your code, so it can detect packaging problems as well.
+
+To start, let's install `tox`.  In the virtual environment for this repository, run the following command:
+
+```sh
+python -m pip install tox
+```
+
+Then simply run:
+
+```sh
+tox
+```
+
+Note that:
+- `tox` caches the virtual environment used, so subsequent runs should be much faster.
+- However, if you change dependencies, you'll want to force the environment to be recreated.  You can do that with the `--recreate` [flag](https://tox.wiki/en/3.24.5/example/basic.html?highlight=recreate#forcing-re-creation-of-virtual-environments).
+
+
 
 _TODO: Example_
