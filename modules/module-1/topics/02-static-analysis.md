@@ -1,14 +1,34 @@
 # Static Code Analysis & Style
-_TODO_
+**Static analysis tools** analyze source code to help to detect problems, code smells, and enforce code style.  You may also sometimes hear them referred to as [lint](https://en.wikipedia.org/wiki/Lint_(software)) tools.  We'll cover some common categories of these tools in the Python ecosystem.
 
 ## General
 
-There are many tools in the Python linting ecosystem.  The following is a short list of a few popular tools as examples:
+There are many general analysis in the Python linting ecosystem.  The following is a short list of a few popular tools as examples:
 
 - `flake8` ([GitHub](https://github.com/PyCQA/flake8)): a combination of `pyflakes`, `pycodestyle`, and `mccabe`, identifies common issues in Python code.
 - `pylint` ([GitHub](https://github.com/PyCQA/pylint)): general Python static code analysis; identifies code smells and has a plugin system.
 - `black` ([GitHub](https://github.com/psf/black)): "The uncompromising Python code formatter", enforces strict code style on Python projects with deliberately limited options.
 - `isort` ([GitHub](https://github.com/PyCQA/isort)): simple tool to sort import statements.
+
+To start, let's take a look at `black`, `flake8`, and `isort`.  We can install all of them in one command with:
+
+```
+pip install black flake8 isort
+```
+
+Let's look at the `coordinates.py` [file](../../../src/distance_matrix/models/coordinates.py) in our codebase and see what each of these tools do.  We'll run the following commands in order:
+
+```
+black src
+flake8 src
+isort src
+```
+
+- `black` enforces code style, changing single quotes to double quotes
+- `flake8` enforces additional code smell rules, calling out an unused import (it will also enforce some code style rules on its own)
+- `isort` ASCIIbetizes our imports for readability (and will group them)
+
+### Tools in Tandem
 
 These tools often have areas of overlap with one another.  In some cases, they may be incompatible with one another by default, but can be configured to work together.
 

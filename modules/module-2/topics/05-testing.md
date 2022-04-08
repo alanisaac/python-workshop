@@ -53,6 +53,8 @@ The `coverage` package ([GitHub](https://github.com/nedbat/coveragepy)) provides
 
 When using `pytest`, it is recommended to use the `pytest-cov` plugin ([GitHub](https://github.com/pytest-dev/pytest-cov)) as opposed to using `coverage` directly.  `pytest-cov` is a wrapper around `coverage` but slightly better compatibility and supports collecting coverage while using `pytest-xdist` as well.
 
+_TODO: Example_
+
 ### diff_cover
 While `coverage` provides overall code coverage reports, it can also be useful to understand coverage changes as a result of a pull request (or "merge request", "diff", etc. depending on your source control tool of choice).
 
@@ -61,3 +63,5 @@ The `diff_cover` package ([GitHub](https://github.com/Bachmann1234/diff_cover)) 
 > Note that when used in CI, you may need to ensure that **both** the `main` branch and `merging` branch involved in the diff are available in order to make a comparison.
 
 One pattern for improving unit test coverage in a codebase, for example, is to set a coverage standard for _new_ code.  `diff_cover` allows for this enforcement with the `--fail-under` flag.
+
+_TODO: Example_

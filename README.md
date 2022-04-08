@@ -42,3 +42,4 @@ Other code blocks may not.  Be on the lookout for the interpreter prompt as a si
   - It is simple enough to discuss in a workshop setting, but complex enough to use for examples of programming paradigms
   - It is embarassingly parallel, so we could use it for extensions on parallelization down the road
 - The packaging and codebase for this workshop does not work out of the box!  We will create or fill in parts of it as we go.
+- There are many tools in the Python ecosystem, and we can't cover all of them!  The workshop will try to cover categories of tools and ways of doing things but there are often alternatives.  We'll try to touch on alternatives when they come up, and there are many links to moree documentation or discussion.

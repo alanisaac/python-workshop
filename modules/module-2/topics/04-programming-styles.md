@@ -109,3 +109,5 @@ class EquirectangularCalculator(DistanceCalculator):
         d = sqrt(x * x + y * y) * self.earth_radius_km
         return d
 ```
+
+_TODO: Discussion of paradigms_
