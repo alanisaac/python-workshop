@@ -1,24 +1,25 @@
 # Static Code Analysis & Style
 **Static analysis tools** analyze source code to help to detect problems, code smells, and enforce code style.  You may also sometimes hear them referred to as [lint](https://en.wikipedia.org/wiki/Lint_(software)) tools.  We'll cover some common categories of these tools in the Python ecosystem.
 
-## General
+## Style & Code Smells
 
 There are many general analysis in the Python linting ecosystem.  The following is a short list of a few popular tools as examples:
 
 - `flake8` ([GitHub](https://github.com/PyCQA/flake8)): a combination of `pyflakes`, `pycodestyle`, and `mccabe`, identifies common issues in Python code.
 - `pylint` ([GitHub](https://github.com/PyCQA/pylint)): general Python static code analysis; identifies code smells and has a plugin system.
+- `autopep8` ([GitHub](https://github.com/hhatto/autopep8)): a tool that automatically formats code according to the [PEP-8](https://peps.python.org/pep-0008/) Python style guide.
 - `black` ([GitHub](https://github.com/psf/black)): "The uncompromising Python code formatter", enforces strict code style on Python projects with deliberately limited options.
-- `isort` ([GitHub](https://github.com/PyCQA/isort)): simple tool to sort import statements.
+- `isort` ([GitHub](https://github.com/PyCQA/isort)): a simple tool to sort import statements.
 
 To start, let's take a look at `black`, `flake8`, and `isort`.  We can install all of them in one command with:
 
-```
+```sh
 pip install black flake8 isort
 ```
 
 Let's look at the `coordinates.py` [file](../../../src/distance_matrix/models/coordinates.py) in our codebase and see what each of these tools do.  We'll run the following commands in order:
 
-```
+```sh
 black src
 flake8 src
 isort src
@@ -65,6 +66,29 @@ Docstring formats are a matter of personal preference, but considerations includ
 - **IDE Support**: make sure your preferred format is supported by the range of IDEs in your organization.
 - **Documentation Generators**: if you plan to create published documentation, make sure your documentation generator (like [Sphinx](https://www.sphinx-doc.org/en/master/)) supports your format.
 
+Let's add `pydocstyle` to our analysis tools.  Install it with:
+
+```sh
+pip install pydocstyle
+```
+
+Note how in the [pyproject.toml file](../../../pyproject.toml) in this repository, we're set up for `google` doc style conventions.
+
+Try running:
+
+```sh
+pydocstyle src
+```
+
+Notice how it calls out that we haven't added doc comments for anything!  Alternatively, you can tweak `pydocstyle` to specifically ignore certain rules by replacing `convention` with this line in the `[tool.pydocstyle]` section:
+
+```ini
+ignore = D100,D104
+```
+
+Now when you run `pydocstyle src`, it only flags public classes and methods for missing docs.
+
+
 ## Type Checking
 
 **Type Hints** in Python are code annotations that help indicate to developers what types are used for variables, arguments, and return values.  We'll go more in-depth into Python type hints in the second module of this workshop.
@@ -88,6 +112,18 @@ There are several static type checkers in Python, including:
 See [this article](https://www.infoworld.com/article/3575079/4-python-type-checkers-to-keep-your-code-clean.html) for a more detailed comparison of these type checkers.
 
 For the purposes of this workshop, we'll use `mypy`, but it's worth exploring the other options if the features sound interesting or `mypy` doesn't meet your needs.
+
+Install `mypy` with:
+
+```sh
+pip install mypy
+```
+
+We'll discuss `mypy` and typing more in the next module.  Just to test it out for now, you can try running:
+
+```sh
+mypy modules/module-2/animals.py
+```
 
 ## Persisting Requirements
 Static analysis and testing tools are added for development purposes.  But without any additional tooling, the more you add the more difficult it is for others to recreate the same development environment.  Newer versions of `mypy` or `flake8`, for examplee, can have different rules they apply.
@@ -136,6 +172,7 @@ black
 isort
 flake8
 mypy
+pydocstyle
 ```
 
 Now run the `pip-compile` command against that file:

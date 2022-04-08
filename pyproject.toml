@@ -4,3 +4,6 @@ build-backend = "setuptools.build_meta"
 
 [tool.isort]
 profile = "black"
+
+[tool.pydocstyle]
+ignore = "D100,D104"
