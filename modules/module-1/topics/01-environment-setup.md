@@ -100,6 +100,8 @@ If you prefer text editors, there are several plugins that can enhance the Pytho
 ### PyCharm
 [PyCharm](https://www.jetbrains.com/pycharm/) is a paid IDE built by JetBrains, tailored specifically for Python development.
 
+
+
 _TODO: PyCharm setup_
 
 ### VS Code
