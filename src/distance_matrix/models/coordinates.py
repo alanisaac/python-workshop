@@ -1,4 +1,5 @@
-from pydantic import BaseModel, validator
+import math
+from pydantic import validator, BaseModel
 
 
 class Coordinates(BaseModel):
