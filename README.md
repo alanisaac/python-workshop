@@ -33,4 +33,12 @@ In some sections of the workshop, some code blocks may start with the Python int
 >>> import mypy
 ```
 
-Other code blocks may not.  Be on the lookout for the interpreter prompt as a signal you should enter your current Python interpreter.  
+Other code blocks may not.  Be on the lookout for the interpreter prompt as a signal you should enter your current Python interpreter.
+
+### Notes on this Workshop
+
+- The workshop is structured around components of a distance matrix calculator because:
+  - It is (hopefully) reasonably familiar
+  - It is simple enough to discuss in a workshop setting, but complex enough to use for examples of programming paradigms
+  - It is embarassingly parallel, so we could use it for extensions on parallelization down the road
+- The packaging and codebase for this workshop does not work out of the box!  We will create or fill in parts of it as we go.
