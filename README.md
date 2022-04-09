@@ -44,6 +44,7 @@ Other code blocks may not.  Be on the lookout for the interpreter prompt as a si
 - The packaging and codebase for this workshop does not work out of the box!  We will create or fill in parts of it as we go.
 - Along the same lines, the codebase is not necessarily consistent or efficient:
   - Inconsistencies are sometimes there because we want to explore the consequences of multiple patterns
-  - Inefficiencies are sometimes there because we want to demonstrate different approaches or means of optimization
+  - Inefficiencies are sometimes there because we want to demonstrate different approaches or means of optimization.
   - Both are there because my goal was to discuss all of this in a workshop, rather than present a perfect solution to a problem.  Asking questions and raising critiques is how we can learn together!
-- There are many tools in the Python ecosystem, and we can't cover all of them!  The workshop will try to cover categories of tools and ways of doing things but there are often alternatives.  We'll try to touch on alternatives when they come up, and there are many links to moree documentation or discussion.
+- In the first part of this workshop, we're also focusing on plain Python and programming patterns rather than `numpy` or `pandas`.
+- There are many tools in the Python ecosystem, and we can't cover all of them!  The workshop will try to cover categories of tools and ways of doing things but there are often alternatives.  We'll try to touch on alternatives when they come up, and there are many links to more documentation or discussion.
