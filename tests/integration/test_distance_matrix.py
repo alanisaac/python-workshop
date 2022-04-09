@@ -1,6 +1,7 @@
-from distance_matrix.main import run
 import filecmp
 from pathlib import Path
+
+from distance_matrix.main import run
 
 
 def test_run_calculates_distances():

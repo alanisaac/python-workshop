@@ -12,13 +12,13 @@ from .utils import permutations
 
 def get_arg_parser() -> argparse.ArgumentParser:
     arg_parser = argparse.ArgumentParser()
-    arg_parser.add_argument('input', nargs=1)
+    arg_parser.add_argument("input", nargs=1)
     return arg_parser
 
 
 def read_input(path: str) -> Sequence[Sequence[str]]:
     data = []
-    with open(path, 'r') as input_file:
+    with open(path, "r") as input_file:
         reader = csv.reader(input_file)
         for row in reader:
             data.append(row)
@@ -27,22 +27,14 @@ def read_input(path: str) -> Sequence[Sequence[str]]:
 
 
 def parse_input(row: Sequence[str]) -> Location:
-    return Location(
-        row[0],
-        coordinates=Coordinates(
-            latitude=row[1],
-            longitude=row[2]
-        )
-    )
+    return Location(row[0], coordinates=Coordinates(latitude=row[1], longitude=row[2]))
 
 
 def write_output(path: str, output_records: Iterable[Output]) -> None:
-    with open(path, 'w', newline='') as output_file:
+    with open(path, "w", newline="") as output_file:
         writer = csv.writer(output_file)
         for record in output_records:
-            writer.writerow(
-                (record.origin, record.destination, record.distance)
-            )
+            writer.writerow((record.origin, record.destination, record.distance))
 
 
 def run(path: str) -> int:
