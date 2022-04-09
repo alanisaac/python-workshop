@@ -20,25 +20,109 @@ pip install pytest
 
 ## Test Structure
 
-`pytest` allows you to write tests directly within test modules or use `unittest.TestCase` to group them into classes.  Which pattern you see in the wild can be a matter of personal preference.
+By convention, tests in Python are commonly discovered by searching for functions with a `test_` prefix, inside of files with a `test_` prefix.  Most test runners, `pytest` included have their own [discovery mechanism](https://docs.pytest.org/en/6.2.x/goodpractices.html#conventions-for-python-test-discovery), and offer a way to [change those conventions](https://docs.pytest.org/en/6.2.x/example/pythoncollection.html#changing-naming-conventions).
 
-### Class Method
-
-_TODO_
+`pytest` allows you to write tests directly within test modules or use `unittest.TestCase` to group them into classes (also prefixed with `Test`, by convention).  Which pattern you see in the wild can be a matter of personal preference.
 
 ### Functional Method
 
-_TODO_
+Let's take a test from the `tests/models/test_coordinates.py` file.  This is an example of the functional style of testing:
+
+```py
+@pytest.mark.parametrize(
+    "latitude,longitude",
+    [
+        (0, 0),
+        (90, 180),
+        (-90, -180)
+    ]
+)
+def test_valid_coordinates_are_constructed_correctly(latitude, longitude):
+    coordinates = Coordinates(latitude=latitude, longitude=longitude)
+
+    assert coordinates.latitude == latitude
+    assert coordinates.longitude == longitude
+
+```
+
+The test is defined directly in the module.  If common setup or teardown is needed across multiple tests, you can use **fixtures** to represent it.  We won't go in-depth into fixtures in this workshop, but `pytest` has good documentation on how to use them:
+
+- For simple setup use cases, see [this section](https://docs.pytest.org/en/latest/how-to/fixtures.html#quick-example). 
+- For setup and teardown use cases see [this section](https://docs.pytest.org/en/latest/how-to/fixtures.html#teardown-cleanup-aka-fixture-finalization). 
+
+### Class Method
+
+`pytest` can also represent tests in classes (`unittest` style).  Let's take our tests and change them into the class style.  
+
+Parameterization, through `pytest.mark.parametrize` isn't supported between `pytest` and `TestCase`.  However, we can use the `parameterized` library ([GitHub](https://github.com/wolever/parameterized)) to help:
+
+```sh
+pip install parameterized
+```
+
+With this library, we can change our tests to:
+
+```py
+from parameterized import parameterized
+import pytest
+from pydantic import ValidationError
+from unittest import TestCase
+
+from distance_matrix.models.coordinates import Coordinates
+
+
+class TestCoordinates(TestCase):
+    @parameterized.expand(
+        [
+            (-1000, 0),
+            (1000, 0),
+            (0, -1000),
+            (0, 1000)
+        ]
+    )
+    def test_invalid_coordinates_raises_error(self, latitude, longitude):
+        with pytest.raises(ValidationError):
+            _ = Coordinates(latitude=latitude, longitude=longitude)
+
+    @parameterized.expand(
+        [
+            (0, 0),
+            (90, 180),
+            (-90, -180)
+        ]
+    )
+    def test_valid_coordinates_are_constructed_correctly(self, latitude, longitude):
+        coordinates = Coordinates(latitude=latitude, longitude=longitude)
+
+        assert coordinates.latitude == latitude
+        assert coordinates.longitude == longitude
+```
+
+> Note how there is less boilerplate with the `parameterized` library (no need to define variable names).  You can use it with either test case style, and it works with the other major test runners above.
+
+`TestCase` has a number of functions on it commonly used for setup and teardown of tests:
+
+- `setUp` / `tearDown`
+- `setUpClass` / `tearDownClass`
+- `setUpModule` / `tearDownModule`
 
 ### Parallelizing Execution
 
 For unit tests, by default `pytest` will run them sequentially.  If your test cases are thread-safe, you might want to parallelize execution of those tests.  This can help speed up tests both locally, and in CI pipelines.
 
-The `pytest-xdist` plugin ([GitHub](https://github.com/pytest-dev/pytest-xdist)) allows you to run tests in parallel.  It will run tests in parallel according to the number of CPU cores with the command:
+The `pytest-xdist` plugin ([GitHub](https://github.com/pytest-dev/pytest-xdist)) allows you to run tests in parallel.  You can install it with:
+
+```
+pip install pytest-xdist
+```
+
+It will run tests in parallel according to the number of CPU cores with the command:
 
 ```sh
 pytest -n auto
 ```
+
+Notice that the output from testing is slightly different (for the curious, `gw` stands for "`execnet`'s [gateway](https://execnet.readthedocs.io/en/latest/basics.html)" but is essentially a subprocess).
 
 > `pytest-parallel` ([GitHub](https://github.com/browsertron/pytest-parallel)) is a newer plugin that can additionally handle testing concurrency, if needed.
 
