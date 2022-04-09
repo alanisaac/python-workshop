@@ -112,7 +112,20 @@ from __future__ import annotations
 
 By using this import on a module, you no longer have to manage individual forward references.
 
-## Typevars, Generics, and Overloads
+## Other Useful Typing Constructs
+
+### Final
+
+In Python typing, there are [three ways](https://mypy.readthedocs.io/en/latest/final_attrs.html) something can be declared **final** or "should not be modified":
+
+- variables and attributes can be declared as constants with `Final`
+- methods can be decorated with `@final` preventing them from being overridden
+- classes can be decorated with `@final` preventing them being inherited
+
+_TODO: Example_
+
+
+### Typevars, Generics, and Overloads
 
 _TODO_
 
