@@ -147,7 +147,7 @@ Combined, this produces a `settings.json` [file](../../../.vscode/settings.json)
 ```
 
 Other useful Python-specific plugins include:
-- Additional support for static type checkers like [mypy](https://marketplace.visualstudio.com/items?itemName=matangover.mypy) and [pyright](https://marketplace.visualstudio.com/items?itemName=ms-pyright.pyright&ssr=false).
+- Additional support for static type checkers like [mypy](https://marketplace.visualstudio.com/items?itemName=matangover.mypy) and [pyright](https://marketplace.visualstudio.com/items?itemName=ms-pyright.pyright&ssr=false) (not strictly needed with the `python` plugin settings)
 - Support for [jinja templates](https://marketplace.visualstudio.com/items?itemName=samuelcolvin.jinjahtml).
 - [Docstring generation](https://marketplace.visualstudio.com/items?itemName=njpwerner.autodocstring).
 - Python [environment management](https://marketplace.visualstudio.com/items?itemName=donjayamanne.python-environment-manager)
