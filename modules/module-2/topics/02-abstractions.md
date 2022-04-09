@@ -168,4 +168,24 @@ However, there are a few cases where protocols are more useful:
 
 ## Collection Abstractions
 
-_TODO_
+As part of SOLID design practices, it's common to [depend on abstractions](https://en.wikipedia.org/wiki/Dependency_inversion_principle) rather than details.  Collection classes like `List` and `Dict` are no different.
+
+Python offers several useful generic collection abstractions in either the `typing` module (`<= py3.8`) or the `collections.abc` module (`> py3.9`):
+
+See https://docs.python.org/3/library/typing.html#abstract-base-classes
+```sh
+Container  # has the __contains__() method
+Iterable  # has the __iter__() method, can be used in for loops
+
+Sized  # has the __len__() method, can be used in len(sized)
+Collection  # a sized iterable
+
+Sequence  # a read-only sequence (ordered collection)
+MutableSequence  # a mutable sequence
+
+Set (typing.AbstractSet)  # a read-only set (hashed collection)
+MutableSet  # a mutable set
+
+Mapping  # a read-only mapping (hashed key-value pair collection)
+MutableMapping  # a mutable mapping
+```
