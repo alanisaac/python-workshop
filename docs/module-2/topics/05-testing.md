@@ -172,10 +172,21 @@ pytest --cov=src --cov-report=xml
 ### diff_cover
 While `coverage` provides overall code coverage reports, it can also be useful to understand coverage changes as a result of a pull request (or "merge request", "diff", etc. depending on your source control tool of choice).
 
-The `diff_cover` package ([GitHub](https://github.com/Bachmann1234/diff_cover)) adds this capability, combining a code coverage report generated from a tool like `coverage` with `git diff` to produce coverage information specifically for lines in the diff.  
+The `diff_cover` package ([GitHub](https://github.com/Bachmann1234/diff_cover)) adds this capability, combining a code coverage report generated from a tool like `coverage` with `git diff` to produce coverage information specifically for lines in the diff.  Install it with:
+
+```py
+pip install diff_cover
+```
+
+Now let's make a change that would change our code coverage.  For example, write a new function in any `src` file.  Then re-run `pytest` with coverage and run `diff-cover`:
+
+```sh
+pytest --cov=src --cov-report=xml
+diff-cover coverage.xml
+```
+
+You'll see a report with coverage differences.  This can be helpful to identify missing coverage in changes you made, so you don't need to hunt them down in the overall report.  You can also generate this report in [other formats](https://github.com/Bachmann1234/diff_cover#getting-started) like markdown and HTML.
 
 > Note that when used in CI, you may need to ensure that **both** the `main` branch and `merging` branch involved in the diff are available in order to make a comparison.
 
-One pattern for improving unit test coverage in a codebase, for example, is to set a coverage standard for _new_ code.  `diff_cover` allows for this enforcement with the `--fail-under` flag.
-
-_TODO: Example_
+One pattern for improving unit test coverage in a codebase, for example, is to set a coverage standard for _new_ code.  `diff_cover` allows for this enforcement with the `--fail-under` flag, which you can run in CI environments.
