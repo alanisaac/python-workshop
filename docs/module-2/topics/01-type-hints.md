@@ -114,6 +114,10 @@ By using this import on a module, you no longer have to manage individual forwar
 
 ## Other Useful Typing Constructs
 
+### Typevars and Generics
+
+_TODO_
+
 ### Final
 
 In Python typing, there are [three ways](https://mypy.readthedocs.io/en/latest/final_attrs.html) something can be declared **final** or "should not be modified":
@@ -122,12 +126,22 @@ In Python typing, there are [three ways](https://mypy.readthedocs.io/en/latest/f
 - methods can be decorated with `@final` preventing them from being overridden
 - classes can be decorated with `@final` preventing them being inherited
 
-_TODO: Example_
+For example, let's look at the `calculators.py` module here.  We'll talk about the structure of this file later.  For now, observe how the signatures of two functions use the same default value:
 
+```py
+def haversine(earth_radius_km: float = 6371.0088) -> DistanceCalculator:
+    ...
+```
 
-### Typevars, Generics, and Overloads
+Seems like a good opportunity to introduce a constant.  Because we want the value to remain constant, we can mark it `Final` so `mypy` will raise an error if anyone tries to assign another value:
 
-_TODO_
+```py
+DEFAULT_EARTH_RADIUS_KM: Final = 6371.0088
+```
+
+Note how this behaves a little differently than other type hints.  The _actual_ type is still `float`.
+
+> Don't believe it?  There is a special construct called `reveal_type` that you can use to debug type hints.  Add `reveal_type(DEFAULT_EARTH_RADIUS_KM)` on the line after the constant (no import needed, `flake8` _will_ yell) and run `mypy` again.  You should see a line noting the "revealed" type as `builtins.float`.
 
 ## Missing Type Hints
 Occasionally, you may find certain 3rd party libraries do not have type hints.  `requests`, for example, is a notable popular package that does not ([GitHub](https://github.com/psf/requests/issues/3855)).  In some cases, other open source developers will create type hint packages to supplement these libraries with typing stubs.
