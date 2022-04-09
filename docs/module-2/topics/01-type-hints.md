@@ -126,6 +126,47 @@ boston, 42.364758, -71.067421
 
 We then need to iterate the permutations of these locations to form our matrix (assuming the distance is symmetrical).
 
+Python's `itertools` library already has a way to get `permutations`.  But for demonstrating `TypeVars`, we've written our own in the [utils module](../../../src/distance_matrix/utils.py).  But so far, we've left it untyped:
+
+```py
+def permutations(sequence):
+    ...
+```
+
+> What's the drawback here?  Without the type hints, our type checker doesn't know the type of the return value, and therefore doesn't know what attributes it has.  In the [main module](../../../src/distance_matrix/main.py), on the line `distance = calculator(location_1.coordinates, location_2.coordinates)`, try changing the attribute access from `.coordinates` to `.cheese` and run `mypy` again.  You won't see any errors.
+
+
+How should we add type hints?  The function doesn't care what the contents of `sequence` are -- they could be anything.  All we know is that the input is a sequence of _something_ and the output is pairs of _something_.
+
+This is a good case to make the function generic with a **TypeVar**.  [TypeVars](https://docs.python.org/3/library/typing.html#typing.TypeVar) are used to create generic functions or classes.  Here's one way to type this function:
+
+```py
+_T = TypeVar("_T")
+
+
+def permutations(sequence: Sequence[_T]) -> Iterable[Tuple[_T, _T]]:
+    ...
+```
+
+> You might notice the use of the underscore in `_T` to make the `TypeVar` "private" (by convention).  Since `TypeVars` are typically not part of public APIs, it's [best practice](https://github.com/microsoft/pyright/blob/main/docs/typed-libraries.md#generic-classes-and-functions) to mark them private.
+
+**Generics** ([docs](https://docs.python.org/3/library/typing.html#typing.Generic)) are similar, but are a way to apply a `TypeVar` to a class.  You can create your own generic by inheriting `Generic`:
+
+```py
+from typing import Generic, TypeVar
+
+
+_T = TypeVar("_T")
+
+
+class SortedList(Generic[_T]):
+    def __getitem__(self, index: int) -> _T:
+        ...
+```
+
+
+Collection abstractions like `Sequence` and `Iterable` above are both generics.
+
 ### Final
 
 In Python typing, there are [three ways](https://mypy.readthedocs.io/en/latest/final_attrs.html) something can be declared **final** or "should not be modified":
