@@ -69,6 +69,45 @@ See also this [GitHub discussion](https://github.com/pypa/packaging.python.org/i
 
 This repository uses the `src` layout.  While it's a little less accessible for beginners, it's useful to understand the benefits and how to work in this layout.
 
+#### Running Tests
+
+One tricky thing about the `src` layout that might not be intuitive is that [best practice](https://docs.pytest.org/en/6.2.x/goodpractices.html) is for your tests to run against an _installed_, but editable package.
+
+For example, if you've tried to run `pytest` already with:
+
+```sh
+pip install pytest
+pytest
+```
+
+You might notice the tests complain about `pydantic`.  Easy enough, we'll install `pydantic` with:
+
+```sh
+pip install pydantic
+pytest
+```
+
+Now, you might notice running `pytest` that our test code can't find our source code!
+
+```py
+ImportError while importing test module 'C:\git\alanisaac\python-workshop\tests\models\test_coordinates.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Python38\lib\importlib\__init__.py:127: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+tests\models\test_coordinates.py:4: in <module>
+    from distance_matrix.models.coordinates import Coordinates
+E   ModuleNotFoundError: No module named 'distance_matrix'
+```
+
+The trick is to install our package locally, but using the `-e` [flag](https://pip.pypa.io/en/stable/cli/pip_install/#install-editable) for an editable installation:
+
+```sh
+pip install -e .
+```
+
+Now our Python package source code is being treated like any other package in the environment (try running `pip list`), but whose files come from the `src` folder.
+
 ## Package Creation
 
 The Python Packaging Authority (PyPA) has good documentation on how to [create packages](https://packaging.python.org/en/latest/tutorials/packaging-projects/).  What follows is an abbreviated and adapted version of that tutorial.
@@ -87,7 +126,7 @@ Open up the links above to explore these files in more detail:
 
 ### Defining Package Dependencies
 
-Our package uses `pydantic`, but it's not listed as a dependency -- let's fix that.  Package dependencies are defined using the `install_requires` option in metadata.  Copy and paste the following into the `setup.cfg` file, under the `[options]` section:
+Our package uses `pydantic`, but it's not listed as a dependency -- let's fix that.  Package dependencies are defined using the `install_requires` option in metadata.  Open up the `setup.cfg` file, and observe the following under the `[options]` section:
 
 ```ini
 install_requires =
