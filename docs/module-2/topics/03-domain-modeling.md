@@ -60,7 +60,7 @@ class Coordinates(BaseModel):
 When creating an instance of `Coordinates` that violates these validations, a Pydantic `ValidationError` will be raised.  To see the output, run:
 
 ```py
-python ./modules/module-2/coordinates.py
+python ./docs/module-2/coordinates.py
 ```
 
 Similarly to dataclasses, Pydantic models support creating dictionaries with `.dict()`, but also have the ability to serialize to JSON directly with `.json()`.

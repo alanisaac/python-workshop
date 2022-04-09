@@ -35,8 +35,8 @@ TypeError: Can't instantiate abstract class Dog with abstract methods make_noise
 Type checkers like `mypy`, however, can check for this condition as well:
 
 ```sh
-mypy modules/module-2/animals.py
-modules\module-2\animals.py:11: error: Cannot instantiate abstract class "Dog" with abstract attribute "make_noise"
+mypy docs/module-2/animals.py
+docs\module-2\animals.py:11: error: Cannot instantiate abstract class "Dog" with abstract attribute "make_noise"
 Found 1 error in 1 file (checked 1 source file)
 ```
 

@@ -122,7 +122,7 @@ pip install mypy
 We'll discuss `mypy` and typing more in the next module.  Just to test it out for now, you can try running:
 
 ```sh
-mypy modules/module-2/animals.py
+mypy docs/module-2/animals.py
 ```
 
 ## Persisting Requirements
