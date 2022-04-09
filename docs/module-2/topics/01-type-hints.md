@@ -114,9 +114,17 @@ By using this import on a module, you no longer have to manage individual forwar
 
 ## Other Useful Typing Constructs
 
-### Typevars and Generics
+### TypeVars and Generics
 
-_TODO_
+In order to calculate a distance matrix, we first read input in the form of a list of locations:
+
+```csv
+ann arbor, 42.279594, -83.732124
+pleasant grove, 40.364118, -111.738540
+boston, 42.364758, -71.067421
+```
+
+We then need to iterate the permutations of these locations to form our matrix (assuming the distance is symmetrical).
 
 ### Final
 

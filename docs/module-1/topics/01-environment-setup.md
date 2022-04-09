@@ -151,6 +151,7 @@ Other useful Python-specific plugins include:
 - Support for [jinja templates](https://marketplace.visualstudio.com/items?itemName=samuelcolvin.jinjahtml).
 - [Docstring generation](https://marketplace.visualstudio.com/items?itemName=njpwerner.autodocstring).
 - Python [environment management](https://marketplace.visualstudio.com/items?itemName=donjayamanne.python-environment-manager)
+- [Spellchecking](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker) (very useful for writing all the docs for this workshop)
 
 #### Running & Debugging
 

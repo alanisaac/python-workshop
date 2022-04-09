@@ -15,7 +15,7 @@ class Dog(Animal):
         print("Bark!")
 ```
 
-The `@abstractmethod` decorator above indicates the `make_noise` method must be overriden by class inheritors.  Notably, enforcement of abstract methods is done at class instantiation time, not at definition time.  For example, if we try to create the `Dog` class without the `make_noise` function, Python will only complain when we try to _create_ a `Dog()` object:
+The `@abstractmethod` decorator above indicates the `make_noise` method must be overridden by class inheritors.  Notably, enforcement of abstract methods is done at class instantiation time, not at definition time.  For example, if we try to create the `Dog` class without the `make_noise` function, Python will only complain when we try to _create_ a `Dog()` object:
 
 ```py
 >>> class Animal(ABC):

@@ -6,7 +6,7 @@ This workshop won't cover the general differences between _all_ of these styles,
 
 - [Python Programming Styles](https://newrelic.com/blog/nerd-life/python-programming-styles)
 - [Perceiving Python Programming Paradigms](https://opensource.com/article/19/10/python-programming-paradigms)
-- [Progamming Paradigms in Python](https://www.geeksforgeeks.org/programming-paradigms-in-python/)
+- [Programming Paradigms in Python](https://www.geeksforgeeks.org/programming-paradigms-in-python/)
 
 
 Instead, we'll focus on the differences between overarching ways to structure code in Python: through functions or objects.
@@ -16,7 +16,7 @@ Throughout this topic, we'll use two different implementations of a distance cal
 - **Haversine**: essentially treats the Earth as a sphere, calculates distance "as the crow flies".  Accurate, but computationally expensive (relatively speaking). 
 - **Equirectangular Approximation**: essentially treats the Earth as a flat surface and uses the Pythagorean theorem to calculate distance.  Inaccurate over long distances, but computationally cheap.
 
-The implementations of each in Python are provided below when needed.  For more on these forumulas, [see this website](https://www.movable-type.co.uk/scripts/latlong.html).
+The implementations of each in Python are provided below when needed.  For more on these formulas, [see this website](https://www.movable-type.co.uk/scripts/latlong.html).
 
 ## Functional Approach
 

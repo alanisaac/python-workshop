@@ -67,11 +67,11 @@ Similarly to dataclasses, Pydantic models support creating dictionaries with `.d
 
 ## "Named" and "Typed" Objects
 
-It's not uncommon when working with Python codebases to work with models that use `Tuple` or `Dict` objects as data models.  After all, Python makes working with these structues as data models incredibly easy, and they are perfectly valid ways of passing data around.
+It's not uncommon when working with Python codebases to work with models that use `Tuple` or `Dict` objects as data models.  After all, Python makes working with these structures as data models incredibly easy, and they are perfectly valid ways of passing data around.
 
 Sometimes, however, you may find that for readability purposes or the ability to validate type correctness, you'd like to convert these to objects with attribute names and types.  Creating new classes for these models can be difficult, if they are instantiated and passed around in many places.
 
-In this situtuation, Python offers a couple useful types for slowly migrating `Tuple`s `Dict`s and to "named" objects:
+In this situation, Python offers a couple useful types for slowly migrating `Tuple`s `Dict`s and to "named" objects:
 
 ### NamedTuple
 `NamedTuple` is an object that allows you to give `Tuple`s semantic information.  For example, suppose we had initially defined our Coordinates class using a basic tuple of `(lat, long)`:

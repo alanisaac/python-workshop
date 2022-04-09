@@ -170,7 +170,7 @@ This command should output a lot of text and once completed should generate two 
 
 ### Running a Local Package Repository
 
-Before we publish a package, we'll need a place to publish to.  There is a [test PyPI server](https://packaging.python.org/en/latest/guides/using-testpypi/) that you can use to test out publishing packages publically.  However, it requires registering user accounts and periodically gets pruned.
+Before we publish a package, we'll need a place to publish to.  There is a [test PyPI server](https://packaging.python.org/en/latest/guides/using-testpypi/) that you can use to test out publishing packages publicly.  However, it requires registering user accounts and periodically gets pruned.
 
 For the purposes of this workshop, we'll run a local PyPI server through Docker and `pypiserver` ([GitHub](https://github.com/pypiserver/pypiserver)).  
 

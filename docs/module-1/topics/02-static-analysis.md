@@ -126,11 +126,11 @@ mypy docs/module-2/animals.py
 ```
 
 ## Persisting Requirements
-Static analysis and testing tools are added for development purposes.  But without any additional tooling, the more you add the more difficult it is for others to recreate the same development environment.  Newer versions of `mypy` or `flake8`, for examplee, can have different rules they apply.
+Static analysis and testing tools are added for development purposes.  But without any additional tooling, the more you add the more difficult it is for others to recreate the same development environment.  Newer versions of `mypy` or `flake8`, for example, can have different rules they apply.
 
 It's common practice to persist development requirements in the repository they can be installed easily and in a reproducible way.  A simple way to do that is with a `requirements.txt` file.
 
-`requirements.txt` is simply a list of depenencies and versions.  Rather than individually running `pip install` for each dependency in a virtual environment, we can `pip install -r requirements.txt` to install them all at once.
+`requirements.txt` is simply a list of dependencies and versions.  Rather than individually running `pip install` for each dependency in a virtual environment, we can `pip install -r requirements.txt` to install them all at once.
 
 The simple way to create a `requirements.txt` file is to run:
 
