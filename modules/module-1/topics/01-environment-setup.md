@@ -100,8 +100,6 @@ If you prefer text editors, there are several plugins that can enhance the Pytho
 ### PyCharm
 [PyCharm](https://www.jetbrains.com/pycharm/) is a paid IDE built by JetBrains (with a free community edition), tailored specifically for Python development.
 
-_TODO: PyCharm setup_
-
 #### Settings
 
 Most IDE settings are a matter of personal preference.  However, it's a good idea to look at the [Python Integrated Tools](https://www.jetbrains.com/help/pycharm/settings-tools-python-integrated-tools.html) settings page.  This is how PyCharm determines the default test runner and the docstring format (both of which we'll discuss later in this workshop).
