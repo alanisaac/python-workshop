@@ -141,7 +141,7 @@ DEFAULT_EARTH_RADIUS_KM: Final = 6371.0088
 
 Note how this behaves a little differently than other type hints.  The _actual_ type is still `float`.
 
-> Don't believe it?  There is a special construct called `reveal_type` that you can use to debug type hints.  Add `reveal_type(DEFAULT_EARTH_RADIUS_KM)` on the line after the constant (no import needed, `flake8` _will_ yell) and run `mypy` again.  You should see a line noting the "revealed" type as `builtins.float`.
+> Don't believe it?  There is a [special construct](https://mypy.readthedocs.io/en/stable/common_issues.html#reveal-type) called `reveal_type` that you can use to debug type hints.  Add `reveal_type(DEFAULT_EARTH_RADIUS_KM)` on the line after the constant (no import needed, `flake8` _will_ yell) and run `mypy` again.  You should see a line noting the "revealed" type as `builtins.float`.
 
 ## Missing Type Hints
 Occasionally, you may find certain 3rd party libraries do not have type hints.  `requests`, for example, is a notable popular package that does not ([GitHub](https://github.com/psf/requests/issues/3855)).  In some cases, other open source developers will create type hint packages to supplement these libraries with typing stubs.
