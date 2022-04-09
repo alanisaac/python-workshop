@@ -98,11 +98,32 @@ If you prefer text editors, there are several plugins that can enhance the Pytho
 - [Python Programming in Emacs](https://www.emacswiki.org/emacs/PythonProgrammingInEmacs)
 
 ### PyCharm
-[PyCharm](https://www.jetbrains.com/pycharm/) is a paid IDE built by JetBrains, tailored specifically for Python development.
-
-
+[PyCharm](https://www.jetbrains.com/pycharm/) is a paid IDE built by JetBrains (with a free community edition), tailored specifically for Python development.
 
 _TODO: PyCharm setup_
+
+#### Settings
+
+Most IDE settings are a matter of personal preference.  However, it's a good idea to look at the [Python Integrated Tools](https://www.jetbrains.com/help/pycharm/settings-tools-python-integrated-tools.html) settings page.  This is how PyCharm determines the default test runner and the docstring format (both of which we'll discuss later in this workshop).
+
+PyCharm should be able to autodetect the correct default test runner from the repository.  However, you may want to set the docstring format if it is different than the default.  This will determine how PyCharm autofills docstrings.  You can try it out by documenting one of the functions in the `Coordinates` class [in this workshop](../../../src/distance_matrix/models/coordinates.py).
+
+#### Plugins & External Tools
+
+PyCharm has a [plugin library](https://plugins.jetbrains.com/pycharm_ce) with plugins for various additional features.  This includes support for additional file types, integration with tools like Docker, and many more.  PyCharm is specifically tailored around Python development, so there aren't any required plugins to download.
+
+PyCharm lets you create your own macro buttons using the **external tools** feature.  For example, you could create a macro to run code formatting through a specific formatter.  See more about:
+
+- [External tools](https://www.jetbrains.com/help/pycharm/configuring-third-party-tools.html)
+- [An example of integrating `black` as an external tool](https://black.readthedocs.io/en/stable/integrations/editors.html#pycharm-intellij-idea)
+
+#### Running & Debugging
+
+- Running code
+- Running tests
+
+_TODO_
+
 
 ### VS Code
 [VS Code](https://code.visualstudio.com/) is a free, cross-language IDE built by Microsoft.  It boasts a wide variety of plugins, which can enhance the development experience.
