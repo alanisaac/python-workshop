@@ -135,9 +135,39 @@ _TODO_
 ### coverage
 The `coverage` package ([GitHub](https://github.com/nedbat/coveragepy)) provides code coverage support for Python.  It can measure line or branch coverage, and supports outputs in a variety of standard formats, including HTML, XML (Cobertura), JSON, and LCOV, allowing it to integrate with most popular CI tools.
 
-When using `pytest`, it is recommended to use the `pytest-cov` plugin ([GitHub](https://github.com/pytest-dev/pytest-cov)) as opposed to using `coverage` directly.  `pytest-cov` is a wrapper around `coverage` but slightly better compatibility and supports collecting coverage while using `pytest-xdist` as well.
+When using `pytest`, it is recommended to use the `pytest-cov` plugin ([GitHub](https://github.com/pytest-dev/pytest-cov)) as opposed to using `coverage` directly.  `pytest-cov` is a wrapper around `coverage` but slightly better compatibility and supports collecting coverage while using `pytest-xdist` as well.  Let's install it with:
 
-_TODO: Example_
+```sh
+pip install pytest-cov
+```
+
+And then run it with:
+
+```sh
+pytest --cov=src
+```
+
+Both PyCharm and VS Code have the ability to display code coverage reports within the IDE.  Many CI/CD tools can also display code coverage, check your tool's docs for integration steps.
+
+In both of these cases, the [calculators.py file](../../../src/distance_matrix/calculators.py) is a good example to look at, as it is partially covered.
+
+#### PyCharm Integration (Professional Only)
+
+PyCharm can only show coverage reports in the professional edition.  You'll want to configure pytest to generate an `xml` coverage report:
+
+```sh
+pytest --cov=src --cov-report=xml
+```
+
+You'll also need a setting in your `.coveragerc` file.  See [this StackOverflow post](https://stackoverflow.com/a/68231308) for details.
+
+#### VS Code Integration
+
+In VS Code, you'll need a code coverage plugin like [Coverage Gutters](https://marketplace.visualstudio.com/items?itemName=ryanluker.vscode-coverage-gutters).  To generate an `xml` coverage report, run `pytest` like so:
+
+```sh
+pytest --cov=src --cov-report=xml
+```
 
 ### diff_cover
 While `coverage` provides overall code coverage reports, it can also be useful to understand coverage changes as a result of a pull request (or "merge request", "diff", etc. depending on your source control tool of choice).
