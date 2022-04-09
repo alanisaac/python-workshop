@@ -40,7 +40,7 @@ For example, the default settings for `isort` and `black` conflict.  However, `i
 profile = "black"
 ```
 
-You can see this setting in the [pyproject.toml file](../../../pyproject.toml) in this repository.
+You can see this setting in the [pyproject.toml file](../../../pyproject.toml) in this repository.  Similar settings exist in `.flake8` to [configure](https://black.readthedocs.io/en/stable/guides/using_black_with_other_tools.html#flake8) `flake8` for use with `black`.
 
 ## Docstrings
 
