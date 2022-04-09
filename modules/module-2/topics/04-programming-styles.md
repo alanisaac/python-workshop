@@ -9,7 +9,7 @@ This workshop won't cover the general differences between _all_ of these styles,
 - [Progamming Paradigms in Python](https://www.geeksforgeeks.org/programming-paradigms-in-python/)
 
 
-Instead, we'll focus on the differences between two overarching ways to structure code in Python: through functions or objects.
+Instead, we'll focus on the differences between overarching ways to structure code in Python: through functions or objects.
 
 Throughout this topic, we'll use two different implementations of a distance calculation formula as our example:
 
@@ -28,7 +28,7 @@ from math import radians, cos, sin, asin, sqrt, degrees, pi, atan2
 from .coordinates import Coordinates
 
 class DistanceCalculator(Protocol):
-    def __call__(p1: Coordinates, p2: Coordinates, earth_radius_km: float = 6371.0088) -> float:
+    def __call__(self, p1: Coordinates, p2: Coordinates, earth_radius_km: float = 6371.0088) -> float:
         ...
 
 def calculate_distance_haversine(p1: Coordinates, p2: Coordinates, earth_radius_km: float = 6371.0088) -> float:
@@ -42,7 +42,7 @@ def calculate_distance_haversine(p1: Coordinates, p2: Coordinates, earth_radius_
     a = sin(lat * 0.5) ** 2 + cos(lat1) * cos(lat2) * sin(lng * 0.5) ** 2
 
     c = 2 * atan2(sqrt(a), sqrt(1-a))
-    d = self.earth_radius_km * c
+    d = earth_radius_km * c
     return d
 
 def calculate_distance_equirectangular(p1: Coordinates, p2: Coordinates, earth_radius_km: float = 6371.0088) -> float:
@@ -53,13 +53,77 @@ def calculate_distance_equirectangular(p1: Coordinates, p2: Coordinates, earth_r
 
     x = lng2 - lng1 * cos((lat1 + lat2) / 2)
     y = lat2 - lat1
-    d = sqrt(x * x + y * y) * self.earth_radius_km
+    d = sqrt(x * x + y * y) * earth_radius_km
     return d
 ```
 
+## Parametrized / Factory Function Approach
+
+The above approach is great in isolation.  But suppose we had additional requirements to support distance calculators from APIs, say [Microsoft's Bing Maps route API](https://docs.microsoft.com/en-us/bingmaps/rest-services/routes/calculate-a-route).  There's a slight problem with the above approach: 
+- The signature for distance calculation includes `earth_radius_km`.
+- While this was a reasonable abstraction when all our calculators needed that data, web distance calculators won't need it.
+- Further, they'll likely need their own parameters, like API credential information.
+
+How can we do this with a functional approach?  The signature we _want_ looks like:
+
+```py
+class DistanceCalculator(Protocol):
+    def __call__(self, p1: Coordinates, p2: Coordinates) -> float:
+        ...
+```
+
+But we need to allow for data to parameterize the behavior of that function.  To do that, we can take advantage of declaring nested functions to create `Factory` functions:
+
+```py
+from typing import Protocol
+from math import radians, cos, sin, asin, sqrt, degrees, pi, atan2
+from .coordinates import Coordinates
+
+class DistanceCalculator(Protocol):
+    def __call__(self, p1: Coordinates, p2: Coordinates) -> float:
+        ...
+
+def haversine(earth_radius_km: float = 6371.0088) -> DistanceCalculator:
+    def calculate(p1: Coordinates, p2: Coordinates) -> float:
+        lat1 = radians(p1.latitude)
+        lng1 = radians(p1.longitude)
+        lat2 = radians(p2.latitude)
+        lng2 = radians(p2.longitude)
+
+        lat = lat2 - lat1
+        lng = lng2 - lng1
+        a = sin(lat * 0.5) ** 2 + cos(lat1) * cos(lat2) * sin(lng * 0.5) ** 2
+
+        c = 2 * atan2(sqrt(a), sqrt(1-a))
+        d = earth_radius_km * c
+        return d
+    
+    return calculate
+
+def equirectangular(earth_radius_km: float = 6371.0088) -> DistanceCalculator:
+    def calculate(p1: Coordinates, p2: Coordinates) -> float:
+        lat1 = radians(p1.latitude)
+        lng1 = radians(p1.longitude)
+        lat2 = radians(p2.latitude)
+        lng2 = radians(p2.longitude)
+
+        x = lng2 - lng1 * cos((lat1 + lat2) / 2)
+        y = lat2 - lat1
+        d = sqrt(x * x + y * y) * earth_radius_km
+        return d
+
+    return calculate
+
+# signature shown just as an example of how it differs from the above calculators
+def bing(credentials: ...) -> DistanceCalculator:
+    ...
+```
+
+This is the approach used for the calculators in our repository
+
 ## Object Oriented Approach
 
-To implement the distance calculators as objects, we could do the following:
+We can also achieve the same characteristics as the function factory approach using objects.  To implement the distance calculators as objects, we can do the following:
 
 ```py
 from abc import ABC
@@ -109,5 +173,10 @@ class EquirectangularCalculator(DistanceCalculator):
         d = sqrt(x * x + y * y) * self.earth_radius_km
         return d
 ```
+
+
+## Discussion of Paradigms
+
+An important part to consider in all of these approaches, is how we want to combine **data** (or **state**) with **behavior**.
 
 _TODO: Discussion of paradigms_
