@@ -115,13 +115,6 @@ PyCharm lets you create your own macro buttons using the **external tools** feat
 - [External tools](https://www.jetbrains.com/help/pycharm/configuring-third-party-tools.html)
 - [An example of integrating `black` as an external tool](https://black.readthedocs.io/en/stable/integrations/editors.html#pycharm-intellij-idea)
 
-#### Running & Debugging
-
-- Running code
-- Running tests
-
-_TODO_
-
 
 ### VS Code
 [VS Code](https://code.visualstudio.com/) is a free, cross-language IDE built by Microsoft.  It boasts a wide variety of plugins, which can enhance the development experience.
@@ -135,6 +128,7 @@ There are many settings available with the Python plugin that can control the to
 - `python.formatting.provider`: choose the provider for formatting code (defaults to `autopep8`, we'll experiment with `black`)
 - `python.linting.flake8Enabled`: enables `flake8` linting
 - `python.linting.mypyEnabled`: enables `mypy` type checking
+- `python.testing.pytestEnabled`: enables `pytest` as our test runner
 
 Combined, this produces a `settings.json` [file](../../../.vscode/settings.json) with:
 
@@ -143,6 +137,7 @@ Combined, this produces a `settings.json` [file](../../../.vscode/settings.json)
     "python.formatting.provider": "black",
     "python.linting.flake8Enabled": true,
     "python.linting.mypyEnabled": true,
+    "python.testing.pytestEnabled": true
 }
 ```
 
@@ -152,10 +147,3 @@ Other useful Python-specific plugins include:
 - [Docstring generation](https://marketplace.visualstudio.com/items?itemName=njpwerner.autodocstring).
 - Python [environment management](https://marketplace.visualstudio.com/items?itemName=donjayamanne.python-environment-manager)
 - [Spellchecking](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker) (very useful for writing all the docs for this workshop)
-
-#### Running & Debugging
-
-- Running code
-- Running tests
-
-_TODO_
