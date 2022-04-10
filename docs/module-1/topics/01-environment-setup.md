@@ -82,10 +82,10 @@ Importantly, Python cannot distinguish between two versions of the same installe
 Before we create a virtual environment, observe what Python installation you're using with the following command:
 
 ```sh
-which python
+which python && python --version
 ```
 
-Without a virtual environment active, this might be a system or user installation of Python.
+Without using `pyenv`, or without a virtual environment active, this might be a system or user installation of Python.
 
 Next, from the root of this workshop, run the following commands:
 
@@ -93,6 +93,8 @@ Next, from the root of this workshop, run the following commands:
 python3 -m venv .env
 source .env/Scripts/activate
 ```
+
+By default, the virtual environment will be the same Python version as you're currently using (it can be changed with the `--python` [flag](https://virtualenv.pypa.io/en/latest/cli_interface.html#section-discovery)).
 
 > Common conventions for virtual environment directory names include `env`, `venv`, `.env`, and `.venv`.  Regardless of the name you choose, good practice is to make sure the virtual environment directory is ignored in the repository's [`.gitignore`](../../.gitignore) file (or equivalent), to avoid checking it in to source control.
 
