@@ -2,9 +2,54 @@
 
 This first topic covers how to set up your local environment for Python development, including virtual environments, and IDE settings.
 
-## Python Environments
+![Python Environments](https://imgs.xkcd.com/comics/python_environment.png)
 
-_TODO: pyenv_
+_[credit: xkcd](https://xkcd.com/1987/) ([CC BY-NC 2.5](https://creativecommons.org/licenses/by-nc/2.5/))_
+
+## Python Versions
+
+When working with Python on a project, it's important everyone is working using the same version for consistent language features and reproducibility.
+
+`pyenv` ([GitHub](https://github.com/pyenv/pyenv)) is an important tool for managing Python versions on your system.  If you don't already have it, you can see the installation instructions at:
+
+- `pyenv` [installation](https://github.com/pyenv/pyenv#installation) (*NIX systems)
+- `pyenv-win` [installation](https://github.com/pyenv-win/pyenv-win#installation) (Windows systems)
+
+Or simply using your system's package manager:
+
+```sh
+# win
+choco install pyenv-win
+
+# mac
+brew install pyenv
+```
+
+You may need to restart any terminals or terminal-containing IDEs (VS Code, PyCharm) for `pyenv` to work.  Once installed, you can view the (many) available Python versions with:
+
+```sh
+pyenv install -l
+```
+
+For this workshop, we'll be using Python 3.8 or above.  You can install the latest version of Python 3.8 with:
+
+```sh
+pyenv install 3.8.10
+```
+
+It may take a couple of minutes to install.  Afterwords, you can set the Python version globally or locally with:
+
+```ini
+# set the version globally
+pyenv global 3.8.10
+
+# OR set the version locally
+pyenv local 3.8.10
+
+python --version
+```
+
+> Note that if you're not seeing the Python version change with `pyenv` on Windows, you might need to adjust your `PATH`.  Make sure your system Python is not taking precedence.  See also this [StackOverflow](https://stackoverflow.com/a/67986712) post.
 
 ## Virtual Environments
 
@@ -17,7 +62,7 @@ For system-level packages like `email`, `http`, `logging`, and others, you can f
 ```py
 >>> import sys
 >>> sys.prefix
-'C:\\Python38'
+'C:\\Users\\alanisaac\\.pyenv\\pyenv-win\\versions\\3.8.10'
 ```
 
 Additional packages installed with tools like `pip` will install into a **site packages** directory.  You can find this directory at:
@@ -25,7 +70,7 @@ Additional packages installed with tools like `pip` will install into a **site p
 ```py
 >>> import site
 >>> site.getsitepackages()
-['C:\\Python38', 'C:\\Python38\\lib\\site-packages']
+['C:\\Users\\alanisaac\\.pyenv\\pyenv-win\\versions\\3.8.10', 'C:\\Users\\alanisaac\\.pyenv\\pyenv-win\\versions\\3.8.10\\lib\\site-packages']
 ```
 
 Importantly, Python cannot distinguish between two versions of the same installed package.  This is problematic when different projects need different versions of the same dependency.  Virtual environments solve this problem by running an isolated environment for each project.

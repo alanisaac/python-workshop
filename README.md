@@ -1,17 +1,20 @@
 # Python Workshop
 
+![Python in a nutshell](https://imgs.xkcd.com/comics/python.png)
+
+_[credit: xkcd](https://xkcd.com/353/) ([CC BY-NC 2.5](https://creativecommons.org/licenses/by-nc/2.5/))_
+
 This workshop is divided into three modules, each covering different topics:
 
 - **Module 1 | Environment Setup**: how to set up your environment for Python development and packaging, including helpful tools
 - **Module 2 | Coding Patterns and Practices**: a discussion of coding styles and useful language features in Python
 - **Module 3 | Extensions**: additional topics in asynchronous programming and common gotchas
 
-
 ## Before We Get Started
 
 ### Python Version
 
-This workshop is structured around Python 3.x and above, so make sure you're using a compatible Python version:
+This workshop is structured around Python 3.8 and above.  The first part of the workshop covers using `pyenv` to manage Python versions, but you can also use your preferred installation:
 
 ```py
 $ python
@@ -25,7 +28,7 @@ Type "help", "copyright", "credits" or "license" for more information.
 - Git Bash ([install](https://git-scm.com/download/win)): _on windows only_, used as the default shell in this workshop.
 - Docker ([install](https://docs.docker.com/get-docker/)): used to run a local package repository.  Note that Docker recently changed their terms of service to a subscription model for larger companies - in this workshop it is used educationally, but please make sure you're in compliance with the license if you use it beyond this workshop.
 
-### Prompts
+### Prompts and Shells
 
 In some sections of the workshop, some code blocks may start with the Python interpreter prompt (`>>>`):
 
@@ -35,12 +38,14 @@ In some sections of the workshop, some code blocks may start with the Python int
 
 Other code blocks may not.  Be on the lookout for the interpreter prompt as a signal you should enter your current Python interpreter.
 
+Otherwise, **all** shell commands should be run from the root of this workshop.
+
 ### Notes on this Workshop
 
 - The workshop is structured around components of a distance matrix calculator because:
   - It is (hopefully) reasonably familiar
   - It is simple enough to discuss in a workshop setting, but complex enough to use for examples of programming paradigms
-  - It is embarassingly parallel, so we could use it for extensions on parallelization down the road
+  - It is embarrassingly parallel, so we could use it for extensions on parallelization down the road
 - The packaging and codebase for this workshop does not work out of the box!  We will create or fill in parts of it as we go.
 - Along the same lines, the codebase is not necessarily consistent or efficient:
   - Inconsistencies are sometimes there because we want to explore the consequences of multiple patterns
