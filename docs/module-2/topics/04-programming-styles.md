@@ -57,7 +57,7 @@ def calculate_distance_equirectangular(p1: Coordinates, p2: Coordinates, earth_r
     return d
 ```
 
-## Parametrized / Factory Function Approach
+## Partial Application / Factory Function Approach
 
 The above approach is great in isolation.  But suppose we had additional requirements to support distance calculators from APIs, say [Microsoft's Bing Maps route API](https://docs.microsoft.com/en-us/bingmaps/rest-services/routes/calculate-a-route).  There's a slight problem with the above approach: 
 - The signature for distance calculation includes `earth_radius_km`.
@@ -72,7 +72,7 @@ class DistanceCalculator(Protocol):
         ...
 ```
 
-But we need to allow for data to parameterize the behavior of that function.  To do that, we can take advantage of declaring nested functions to create `Factory` functions:
+But we need to allow for data to parameterize the behavior of that function.  To do that, we can take advantage of declaring nested functions to create a function we return:
 
 ```py
 from typing import Protocol
@@ -119,7 +119,11 @@ def bing(credentials: ...) -> DistanceCalculator:
     ...
 ```
 
-This is the approach used for the calculators in our repository
+This technique is commonly referred to as the [partial application](https://en.wikipedia.org/wiki/Partial_application) of functions (OOP developers might draw a parallel to the [factory pattern](https://en.wikipedia.org/wiki/Factory_method_pattern)).
+
+> Python also has two built-in ways to perform partial application of functions, with `functools.partial` ([docs](https://docs.python.org/3/library/functools.html#functools.partial)) or lambdas.  Why have both?  The history of lambdas in Python is interesting, see [this StackOverflow](https://stackoverflow.com/questions/3252228/python-why-is-functools-partial-necessary) post.
+
+This is the approach used for the calculators in our repository.
 
 ## Object Oriented Approach
 

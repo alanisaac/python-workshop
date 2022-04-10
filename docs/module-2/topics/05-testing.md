@@ -1,5 +1,9 @@
 # Testing
 
+![](https://geekandpoke.typepad.com/.a/6a00d8341d3df553ef01116901f637970c-800wi)
+
+_[credit: geek & poke](https://geekandpoke.typepad.com/geekandpoke/2009/03/stress-test.html) ([CC BY 3.0](https://creativecommons.org/licenses/by/3.0/))_
+
 ## Test Runners
 
 There are a few popular test runners in the Python ecosystem:

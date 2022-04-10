@@ -1,5 +1,9 @@
 # Abstractions
 
+![Abstraction](https://geekandpoke.typepad.com/.a/6a00d8341d3df553ef016767875265970b-800wi)
+
+_[credit: geek & poke](https://geekandpoke.typepad.com/geekandpoke/2012/06/abstraction.html) ([CC BY 3.0](https://creativecommons.org/licenses/by/3.0/))_
+
 Many object oriented languages have the concept of an **interface**: a pure contract or specification for a set of class members with no implementation.  In Python, these contracts can be represented by **abstract base classes**, or `ABC`s.
 
 ```py
