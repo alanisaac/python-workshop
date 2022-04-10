@@ -60,4 +60,4 @@ def run(path: str) -> int:
 def main() -> int:
     arg_parser = get_arg_parser()
     args = arg_parser.parse_args()
-    return run(args.input)
+    return run(args.input[0])

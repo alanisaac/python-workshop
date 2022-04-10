@@ -88,6 +88,7 @@ ignore = D100,D104
 
 Now when you run `pydocstyle src`, it only flags public classes and methods for missing docs.
 
+> You can also enable `pydocstyle` as a [VS Code Python setting](https://code.visualstudio.com/docs/python/linting#_pydocstyle).
 
 ## Type Checking
 
