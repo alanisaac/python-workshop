@@ -179,8 +179,64 @@ class EquirectangularCalculator(DistanceCalculator):
 ```
 
 
-## Discussion of Paradigms
+## Discussion of Patterns
 
-An important part to consider in all of these approaches, is how we want to combine **data** (or **state**) with **behavior**.
+What pattern should you use in your code?  The debate about these patterns is ongoing, both within the Python community, as well as among those who advocate for languages that are tailored to one or the other.
 
-_TODO: Discussion of paradigms_
+What follows is necessarily a subjective perspective (read: just my opinions).  I personally know Python developers who are naturally inclined towards each style over the other.  That said, my favorite article on the subject is:
+
+[Functional vs. OO: The Debate that Imprecise Language Destroyed](https://chelseatroy.com/2021/02/22/functional-vs-oo-the-debate-that-imprecise-language-destroyed/) by Chelsea Troy (educator in U of C master's compsci program).
+
+I like the article because it aims to better define the question.  She argues that:
+1. **"All or nothing"** is a poor way to frame the discussion (these styles are not mutually exclusive)
+2. The question is **terminological butchery**, in that "object-oriented" is not the opposite of "functional" (shouldn't it be "function-oriented"?).  And the imprecision we typically use in these discussions hurts our ability to reason about the question.
+
+Her [follow-up](https://chelseatroy.com/2021/03/08/should-i-use-functional-or-object-oriented-programming/), linked at the bottom of the above article, has her take on the merits of each approach:
+- Object oriented programming is good at describing the interactions between various components.  So it's commonly used to create web apps, simulations, or other similar applications.
+- Functional programming is good at manipulating collections of independent data points.  So it's commonly used to create ETL jobs and data pipelines.
+
+Here's the same concept visually, comparing an ETL application with a GUI app:
+
+![](../fp-and-oop.png)
+
+- The ETL application can be almost entirely pure (save for reading and writing data) since it doesn't have any long-lived state to represent
+- The GUI application represents state in-memory with the concept of a "mouse cursor position", which is mutated, then rendered to the screen
+
+> Could each of these cases be modeled with the other style?  Of course!  Object-oriented ETL might see something like a `Transformer` class.  For functional approaches to event-driven systems, see [functional reactive programming](https://en.wikipedia.org/wiki/Functional_reactive_programming).
+
+
+### Functional Purity
+
+There's another quirk of terminology that Chelsea only implicitly touches on, but it worth calling out.  Buried in Wikipedia's definition for [functional programming](https://en.wikipedia.org/wiki/Functional_programming) is an important line:
+
+> Functional programming is sometimes treated as synonymous with [purely functional programming](https://en.wikipedia.org/wiki/Purely_functional_programming), a subset of functional programming which treats all functions as deterministic mathematical functions, or pure functions.
+
+When people refer to the benefits of [statelessness](https://en.wikipedia.org/wiki/State_(computer_science)) or [idempotence](https://en.wikipedia.org/wiki/Idempotence), in functional programming, they're referring to the benefits of writing [pure functions](https://en.wikipedia.org/wiki/Pure_function).
+
+Why should we care about making pure functions?  More from wikipedia:
+
+> Proponents of purely functional programming claim that by restricting side effects, programs can have fewer bugs, be easier to debug and test, and be more suited to formal verification.
+
+Let's subscribe to that at face value and talk about pure functions in practice.  Take a look at the `pluralize.py` [module](../pluralize.py) in this folder:
+
+- The `_pluralize_word` function simply takes a word and makes it plural
+- `pluralize_not_pure` is an impure way of writing a function that pluralizes a list of words, as it modifies the original list
+- `pluralize_pure` is a pure way of writing a function that pluralizes a list of words, as it has no side effects
+
+Conversely, are there examples of pure functions with an object oriented style?  Take a look at the [validation methods in `coordinates.py`](../../../src/distance_matrix/models/coordinates.py) again.  Those functions are:
+
+- Deterministic
+- Have no side effects
+
+It's important to understand that:
+
+- Writing in a functional style does not automatically make your functions pure.
+- Writing in an object oriented style does not automatically make your object's functions impure.
+
+Nor is functional purity Imagine a user interface with a mouse.  The mouse has a position
+
+My personal takeaway is that **nothing absolves you of thinking**:
+
+  - Functional styles and object oriented styles of programming are not mutually exclusive
+  - Different styles can be better suited to different tasks
+  - If your goal is to reduce bugs and improve testability with immutable state and functional purity, you can succeed or fail at that goal with both styles in Python
