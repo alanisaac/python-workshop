@@ -132,7 +132,126 @@ Notice that the output from testing is slightly different (for the curious, `gw`
 
 ## Mocking & Patching
 
-_TODO_
+When testing in Python, it's common to make use of **mock** objects.  Mock objects are one form of [test double](https://martinfowler.com/bliki/TestDouble.html), that can be used to verify expectations in a test.
+
+Python comes with a mocking library built-in, under `unittest.mock`.  There are two main mock classes:
+
+- `Mock` is the basic mock class
+- `MagicMock` automatically sets up "magic" methods like `__str__`, `__len__`, etc.
+
+> The [recommendation in docs](https://docs.python.org/dev/library/unittest.mock-examples.html#mock-patching-methods) is to default to `MagicMock`.  But many popular open source libraries, articles, etc. choose to default to `Mock`.
+
+Mocks have several methods for assertions.  We won't cover them in detail in this workshop, but see [their descriptions in the docs](https://docs.python.org/3/library/unittest.mock.html#the-mock-class).
+
+> One feature to take note of in assertions is the ability to assert on _some_ call arguments but not others with the `ANY` feature ([docs](https://docs.python.org/3/library/unittest.mock.html#any)).
+
+One common issue in mocking is that by default, mocks create attributes on the fly, so they are prone to error.  Let's try this out in action.  Create a new unit test file in the unit test folder, with the following test:
+
+```py
+from unittest.mock import Mock
+
+def test_mock_fails():
+    mock = Mock()
+
+    mock.asert_called_once()
+```
+
+Note how we've spelled "assert" wrong.  Run the test, and notice it passes!
+
+One way we can combat this is to use the `spec` feature.  `spec` informs the mock that it should take the shape of an object.  For example, we could create a function the mock is supposed to represent:
+
+
+```py
+from unittest.mock import Mock
+
+
+def echo(s: str) -> None:
+    print(s)
+
+
+def test_mock_fails():
+    mock = Mock(spec=echo)
+
+    mock.asert_called_once()
+```
+
+> You can also make use of `create_autospec()` ([docs](https://docs.python.org/3/library/unittest.mock.html#unittest.mock.create_autospec)) for convenience.
+
+### Patching
+
+**Patching** is the act of replacing the definition of a function or class with another one.  In testing, patching is often used to replace implementations with mocks.
+
+Patching can be applied with `unittest.mock.patch` ([docs](https://docs.python.org/3/library/unittest.mock.html#unittest.mock.patch)).  There are several patterns to use the `patch` function.  Suppose we have the following code:
+
+```py
+def get_email_body() -> str:
+    return "Hello there!"
+
+def send_email(to: str, body: str):
+    # actually send an email
+    ...
+
+def run():
+    body = get_email_body()
+    send_email("alanisaac@example.com", body)
+```
+
+Say we want to test the `run()` function, but the implementation of `send_email` actually sends an email.  We don't want our test to do that.  We can use `mock.patch`:
+
+- As a decorator:
+  ```py
+  from unittest import mock
+
+  @mock.patch("my_module.send_email")
+  def test(mock_send_email):
+      my_module.run()
+
+      mock_send_email.assert_called_with(...)
+  ```
+- As a context manager:
+  ```py
+  from unittest import mock
+
+  def test():
+      with mock.patch("my_module.send_email") as mock_send_email:
+        my_module.run()
+
+        mock_send_email.assert_called_with(...)
+  ```
+- In test setup and teardown:
+  ```py
+  from unittest import TestCase, mock
+
+  class TestClass(TestCase):
+      def setUp(self):
+          self.patcher = mock.patch("my_module.send_email")
+          self.mock_send_email = self.patcher.start()
+      
+      def tearDown(self):
+          self.patcher.stop()
+
+      def test(self):
+          my_module.run()
+
+          self.mock_send_email.assert_called_with(...)
+  ```
+
+> Note: when patching, it's important to understand [where to patch](https://docs.python.org/3/library/unittest.mock.html#id6).
+
+We won't cover it in this workshop, but `pytest-mock` ([GitHub](https://github.com/pytest-dev/pytest-mock)) adds additional capabilities to mocking under `pytest`.
+
+### When To Use Mocking and Patching
+
+I'd highly recommend [this talk from Edwin Jung at PyCon 2019](https://www.youtube.com/watch?v=Ldlz4V-UCFw).  It shows some of the complexities of mocking and patching, and alternatives to consider.
+
+> Opinions: 
+> - always be refactoring
+> - consider other test doubles
+> - patching 
+>   - should be rare, and the _last_ tool you use
+> - mocks (if you use them)
+>   - should target _roles_ and not _objects_
+>   - are not just for test isolation
 
 ## Code Coverage Tools
 
