@@ -1,0 +1,10 @@
+black
+isort
+flake8
+mypy
+pip-tools
+pydocstyle
+pytest
+pytest-xdist
+pytest-cov
+twine

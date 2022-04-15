@@ -1,4 +1,10 @@
-def permutations(sequence):
+from typing import Iterable, Sequence, Tuple, TypeVar
+
+
+_T = TypeVar("_T")
+
+
+def permutations(sequence: Sequence[_T]) -> Iterable[Tuple[_T, _T]]:
     """
     Returns the set of permutations from a single sequence.
 
