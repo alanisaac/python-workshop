@@ -148,7 +148,23 @@ See also: [Idiomatic Python: EAFP vs LBYL](https://devblogs.microsoft.com/python
 
 ### try / except else
 
-_TODO_
+One common issue with exception handling (and _more_ exception handling introduced with the EAFP pattern) is when a `try` block can potentially catch exceptions you did not mean for it to.  For example, suppose we are trying to open a file:
+
+```py
+def print_line_count(file_path: str) -> None:
+    try:
+        f = open(file_path, 'r')
+    except OSError:
+        print('cannot open', file_path)
+    else:
+        print(file_path, 'has', len(f.readlines()), 'lines')
+        f.close()
+```
+
+The `close` function can conceivably also throw an `OSError`.  Compare this implementation to:
+
+- Putting that logic in `try`: if `close` throws an `OSError`, it might seem like we can't _open_ the file.
+- Putting that logic outside the `try` / `catch` entirely: we might not have a file at that point, and cannot continue on.
 
 ## imports
 
