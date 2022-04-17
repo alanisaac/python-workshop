@@ -92,7 +92,7 @@ def save_user_if_valid(self, user: Optional[User]) -> bool
     return user_is_valid
 ```
 
-What's wrong with this function?  Coming from other languages, it might be easy to forget that the expression after an `if` statement _does not necessarily evaluate to a boolean_.  It is the `if` statement itself that checks the truthiness of the expression, which may be any value.
+What's wrong with this function?  Coming from other languages, it might be easy to forget that the expression after an `if` statement _does not necessarily evaluate to a boolean_.  It is the `if` statement itself that checks the truthiness of the expression, which may be any value.  (Fortunately, using type hints can help us avoid these kinds of mistakes!)
 
 ## Multiple Inheritance, super(), and MRO
 
