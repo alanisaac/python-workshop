@@ -58,7 +58,41 @@ See also:
 
 ## Truthiness and Falsiness
 
-_TODO_
+One of the early concepts many developers encounter in Python is the idea of "**truthiness**".  In Python, `if` and `while` operators evaluate according to the rules of [truth value testing](https://docs.python.org/3/library/stdtypes.html#truth-value-testing).  Not only are the boolean values `True` and `False` _truthy_ and _falsy_ respectively, but Python considers "empty" values like `[]`, `{}`, `None`, `''`, and `0` _falsy_ as well.  An easy way to know if something is truthy or falsy is to use the built-in `bool()` function:
+
+```py
+>>> bool([])
+False
+>>> bool(["a"])
+True
+```
+
+Simple enough!  But it can be easy to forget how this affects complex boolean conditions.  For example, say we have a function to save user data to a file if that user data is valid:
+
+```py
+def save_user_to_file(user: User) -> None:
+    ...
+
+def save_user_if_valid(self, user: Optional[User]) -> None
+    if user and user.has_first_name:
+        save_user_to_file(user)
+```
+
+Now maybe we want to refactor this function to return whether the user was valid.  Is this correct?
+
+```py
+def save_user_to_file(user: User) -> None:
+    ...
+
+def save_user_if_valid(self, user: Optional[User]) -> bool
+    user_is_valid = user and user.has_first_name
+    if user_is_valid:
+        save_user_to_file(user)
+
+    return user_is_valid
+```
+
+What's wrong with this function?  Coming from other languages, it might be easy to forget that the expression after an `if` statement _does not necessarily evaluate to a boolean_.  It is the `if` statement itself that checks the truthiness of the expression, which may be any value.
 
 ## Multiple Inheritance, super(), and MRO
 
