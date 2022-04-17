@@ -2,7 +2,59 @@
 
 ## Mutable Default Arguments
 
-_TODO_
+One surprising behavior in Python is mutable default arguments in Python functions.  Let's try this out in the interpreter:
+
+```py
+>>> def add_one(values = []):
+...     values.append(1)
+...     return values
+...
+>>> add_one()
+[1]
+>>> add_one()
+[1, 1]
+```
+
+Note how even though the default is defined as an empty list, calling the function multiple times results in multiple values in the list.  That's because the list instance is created _when the function is defined_.  It might make more sense why to consider this equivalent:
+
+```py
+>>> DEFAULT_VALUES = []
+>>> def add_one(values = DEFAULT_VALUES):
+...     values.append(1)
+...     return values
+...
+```
+
+So be careful when defining function defaults.  A common pattern in Python is to use `None` instead:
+
+```py
+>>> def add_one(values = None):
+...     if values is None:
+...         values = []
+...     values.append(1)
+...     return values
+...
+```
+
+You can also use the **sentinel object** pattern, where instead of `None`, an object value is used for comparison.  This can be useful in situations where `None` is a valid input to a function, and you need a different value representing "nothing was passed".
+
+> Using `None` is itself a type of sentinel pattern, where the sentinel value is `None` rather than an object.
+
+```py
+>>> sentinel = object()
+>>> def add_one(values = sentinel):
+...     if values is sentinel:
+...         values = []
+...     values.append(1)
+...     return values
+...
+```
+
+Note that the sentinel object pattern (as opposed to `None`) can be tricky to do well in Python (especially with type hints and copying).  There is a draft PEP that proposes making sentinels a first-class citizen in the Python ecosystem.  See [PEP-661](https://peps.python.org/pep-0661/) for more info on the challenges and the proposal.
+
+See also: 
+- [Common Gotchas - Mutable Default Arguments](https://docs.python-guide.org/writing/gotchas/#mutable-default-arguments)
+- [The Sentinel Object Pattern](https://python-patterns.guide/python/sentinel-object/)
 
 ## Truthiness and Falsiness
 
