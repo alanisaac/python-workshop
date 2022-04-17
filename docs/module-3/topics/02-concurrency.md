@@ -65,3 +65,9 @@ _TODO_
 ## Multiprocessing
 
 _TODO_
+
+## A Note on Performance
+
+Premature optimization: prove it
+
+_TODO_
