@@ -104,7 +104,7 @@ _TODO_
 
 ## Exceptions
 
-_TODO_
+Python exception handling is similar to many C-style programming languages, offering basic `try` / `except` / `finally` functionality.  But there are a couple usage patterns that may be different:
 
 ### EAFP vs LBYL 
 
