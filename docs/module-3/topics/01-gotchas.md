@@ -166,6 +166,63 @@ The `close` function can conceivably also throw an `OSError`.  Compare this impl
 - Putting that logic in `try`: if `close` throws an `OSError`, it might seem like we can't _open_ the file.
 - Putting that logic outside the `try` / `catch` entirely: we might not have a file at that point, and cannot continue on.
 
-## imports
+## Imports
 
-_TODO_
+The import system in Python is _complicated_, and developers often struggle with getting imports right.  We could spend an entire workshop on this subject, but there are other topics to cover.
+
+In lieu of explaining the entire system, I'll highlight important excerpts from the excellent blog post: [How the Python import system works](https://tenthousandmeters.com/blog/python-behind-the-scenes-11-how-the-python-import-system-works/).
+
+### Modules
+
+In order to talk about how the import system works, let's start by looking at the `import` statement itself.  Take a simple statement like:
+
+```py
+import sys
+```
+
+The `import` statement does three things:
+
+1. Searches for a module
+2. Creates a module object
+3. Assigns the object to a variable
+
+Let's see how this works.  In Python we can use the `type` built-in to get the type of an object.  We can, for example, do this:
+
+```py
+>>> l = list([1, 2, 3])
+>>> ListType = type(l)
+>>> ListType([1, 2, 3])
+[1, 2, 3]
+```
+
+Note how we assign the `list` type to a `ListType` variable, then use that variable just like we would use `list` itself.  That example is trivial, but we can do the exact same thing with modules:
+
+```py
+>>> import sys
+>>> ModuleType = type(sys)
+>>> ModuleType
+<class 'module'>
+```
+
+And now that we have a `ModuleType`, we can create our own:
+
+```py
+>>> m = ModuleType('m')
+>>> m
+<module 'm'>
+```
+
+We can check what the module looks like with `__dict__`:
+
+```py
+>>> m.__dict__
+{'__name__': 'm', '__doc__': None, '__package__': None, '__loader__': None, '__spec__': None}
+```
+
+That dictionary may not look special, but a module's dictionary is incredibly important.  It's actually the same dictionary that holds global variables (`globals()`).  
+
+When Python imports a Python file, it creates a new module object and then executes the contents of the file using the dictionary of the module object as the dictionary of global variables.  That's how executing things like `__name__` and `__file__` work: they're ultimately the attributes of the currently executing module.
+
+_TODO: packages and sys.path_
+
+See also: [Python docs on `import`](https://docs.python.org/3/reference/import.html)
