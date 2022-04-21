@@ -96,11 +96,90 @@ What's wrong with this function?  Coming from other languages, it might be easy 
 
 ## Multiple Inheritance, super(), and MRO
 
-See also: 
-- [Super Considered Super (the article)](https://rhettinger.wordpress.com/2011/05/26/super-considered-super/)
-- [Super Considered Super (the talk from PyCon 2015)](https://www.youtube.com/watch?v=xKgELVmrqfs)
+Python supports the concept of **multiple inheritance**: that is, a class may inherit features from more than one parent class.
 
-_TODO_
+But multiple inheritance has what's known as the "diamond dependency problem".  Take the situation below, where class dependencies form a diamond:
+
+```py
+class A:
+    def do_thing(self):
+        print('From A')
+
+
+class B(A):
+    def do_thing(self):
+        print('From B')
+
+
+class C(A):
+    def do_thing(self):
+        print('From C')
+
+
+class D(B, C):
+    pass
+
+
+d = D()
+d.do_thing()
+```
+
+What will happen when this module is run?  To see for yourself, you can run:
+
+```sh
+python docs/module-3/diamond.py
+```
+
+The simple solution here is that Python chooses the first implementation of the method that is in the list of inherited classes.  In this case, since we define `class D(B, C)`, `B`'s function is chosen.  You can test this out by swapping the order of `B` and `C`.
+
+Now, let's introduce **super**.  You might be familiar already with the `super` keyword in simple cases.  In languages with single inheritance, the `super` (or similar keyword like `base`) calls the implementation of the parent class, allowing you to, for example, initialize attributes of a parent class and the derived class:
+
+```py
+class Location:
+    def __init__(self, coordinates: Coordinates) -> None:
+        self.coordinates = coordinates
+
+class Site(Location):
+    def __init__(
+        self, 
+        coordinates: Coordinates,
+        inventory: float
+    ) -> None:
+        super().__init__(coordinates)
+
+        self.inventory = inventory
+```
+
+Let's go back to our diamond dependency.  With the original order of `B, C`, what happens if add in `super` to `B`'s implementation:
+
+```py
+class B(A):
+    def do_thing(self):
+        print('From B')
+        super().do_thing()
+```
+
+Run it again, and you might notice something peculiar.  Although `B` does not inherit from `C`, `super` is still calling `C`'s function.  Try instantiating `B` on its own, and running the same thing.  Why does it now call `A`?
+
+```py
+b = B()
+b.do_thing()
+```
+
+This behavior because Python uses a specific algorithm for it's **method resolution order** (MRO) that looks at the entire dependency graph of a class before deciding on the correct order.  You can view a class's MRO with the `__mro__` attribute like so:
+
+```py
+d = D()
+print(d.__mro__)
+```
+
+The consequence of this are that the behavior of `super` can _change_ without changing a classes direct ancestors.  There is some agreement that it is misnamed, and should have a name indicating it's calling the "next method" in the MRO.
+
+The takes on this in the ecosystem range from: 
+
+- Considering this a "superpower" of Python ([article](https://rhettinger.wordpress.com/2011/05/26/super-considered-super/), [paired PyCon talk](https://www.youtube.com/watch?v=xKgELVmrqfs))
+- Considering it "harmful": difficult to understand and use, and arguing for special rules around it ([article](https://www.youtube.com/watch?v=xKgELVmrqfs))
+- Considering it a reason why you should [avoid multiple inheritance](https://stackoverflow.com/a/1259665) in the first place, or even [avoid inheritance altogether](https://news.ycombinator.com/item?id=2045304)
 
 ## Exceptions
 
