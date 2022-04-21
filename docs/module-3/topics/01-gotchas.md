@@ -173,6 +173,8 @@ d = D()
 print(d.__mro__)
 ```
 
+> Try guessing what happens when you print the `__mro__` for `B`.  Then try it out!  Did it match your expectation?
+
 The consequence of this are that the behavior of `super` can _change_ without changing a classes direct ancestors.  There is some agreement that it is misnamed, and should have a name indicating it's calling the "next method" in the MRO.
 
 The takes on this in the ecosystem range from: 

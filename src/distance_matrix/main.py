@@ -3,11 +3,11 @@ import csv
 import pathlib
 from typing import Iterable, List, Sequence
 
-from .calculators import haversine
+from . import calculators
+from . import executors
 from .models.coordinates import Coordinates
 from .models.location import Location
 from .models.output import Output
-from .utils import permutations
 
 
 def get_arg_parser() -> argparse.ArgumentParser:
@@ -44,12 +44,9 @@ def run(path: str) -> int:
     for row in data:
         locations.append(parse_input(row))
 
-    output_records: List[Output] = []
-    calculator = haversine()
-    for location_1, location_2 in permutations(locations):
-        distance = calculator(location_1.coordinates, location_2.coordinates)
-        output = Output(location_1.name, location_2.name, distance)
-        output_records.append(output)
+    calculator = calculators.haversine()
+    executor = executors.basic_executor(calculator)
+    output_records = executor(locations)
 
     output_path = pathlib.Path(path).parent / "output.csv"
     write_output(str(output_path), output_records)
