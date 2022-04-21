@@ -1,11 +1,26 @@
+import multiprocessing as mp
 from queue import Queue
 from threading import Thread
-from typing import List, Sequence, Protocol, Tuple
+from typing import List, Sequence, Protocol, Tuple, TypeVar
 
 from .calculators import DistanceCalculator
 from .models.location import Location
 from .models.output import Output
 from .utils import permutations
+
+
+_T = TypeVar("_T")
+
+
+class QueueProtocol(Protocol[_T]):
+    def get(self) -> _T:
+        ...
+
+    def empty(self) -> bool:
+        ...
+
+    def put(self, value: _T) -> None:
+        ...
 
 
 class Executor(Protocol):
@@ -31,7 +46,7 @@ def basic_executor(calculator: DistanceCalculator) -> Executor:
 def calculate_threaded(
     calculator: DistanceCalculator,
     locations: Tuple[Location, Location],
-    results_queue: Queue,
+    results_queue: QueueProtocol[Output],
 ) -> None:
     origin = locations[0]
     destination = locations[1]
@@ -44,7 +59,7 @@ def threaded_executor(calculator: DistanceCalculator) -> Executor:
     def execute(locations: Sequence[Location]) -> Sequence[Output]:
         output_records: List[Output] = []
         threads: List[Thread] = []
-        results_queue: Queue = Queue()
+        results_queue: QueueProtocol[Output] = Queue()
         for pair in permutations(locations):
             new_thread = Thread(
                 target=calculate_threaded,
@@ -59,6 +74,35 @@ def threaded_executor(calculator: DistanceCalculator) -> Executor:
 
         for thread in threads:
             thread.join()
+
+        while not results_queue.empty():
+            output = results_queue.get()
+            output_records.append(output)
+
+        return output_records
+
+    return execute
+
+
+def multiprocessing_executor(calculator: DistanceCalculator) -> Executor:
+    def execute(locations: Sequence[Location]) -> Sequence[Output]:
+        output_records: List[Output] = []
+        processes: List[mp.Process] = []
+        results_queue: QueueProtocol[Output] = mp.Queue()
+        for pair in permutations(locations):
+            new_process = mp.Process(
+                target=calculate_threaded,
+                args=(
+                    calculator,
+                    pair,
+                    results_queue
+                )
+            )
+            processes.append(new_process)
+            new_process.start()
+
+        for process in processes:
+            process.join()
 
         while not results_queue.empty():
             output = results_queue.get()
