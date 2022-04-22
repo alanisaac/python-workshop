@@ -8,7 +8,7 @@ from . import inputs
 from . import outputs
 
 
-def run(path: str) -> int:
+def run(path: str) -> None:
     locations = list(inputs.read_input(path))
 
     start_time = time.perf_counter()
@@ -21,9 +21,8 @@ def run(path: str) -> int:
     output_path = pathlib.Path(path).parent / "output.csv"
     outputs.write_output(str(output_path), output_records)
 
-    return 0
-
 
 def main() -> int:
     args = cli.get_args()
-    return run(args.input[0])
+    run(args.input[0])
+    return 0
