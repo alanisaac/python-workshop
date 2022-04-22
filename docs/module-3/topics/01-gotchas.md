@@ -306,24 +306,95 @@ When Python imports a Python file, it creates a new module object and then execu
 
 ### Packages
 
+Packages are in practice modules that have submodules, like `a.b`.  If a directory contains an `__init__.py` file, it is considered a package.
+
+> [Namespace packages](https://packaging.python.org/en/latest/guides/packaging-namespace-packages/) are a different way to define packages that don't need `__init__.py` in the entire directory hierarchy.
+
+Technically speaking, packages are modules that have a `__path__`.  When Python imports a top-level module, it searches for the module in the directories and ZIP archives listed in `sys.path`. But when it imports a submodule, it uses the `__path__` attribute of the parent module instead of `sys.path`.
+
 Let's try importing a real package, and looking at some of its attributes:
 
 ```py
->>> import collections.abc
->>> collections.__path__
-['C:\\Python38\\lib\\collections']
->>> collections.abc.__package__
-'collections'
->>> [key for key in collections.__dict__.keys() if not key.startswith("_")]
-['deque', 'defaultdict', 'OrderedDict', 'namedtuple', 'Counter', 'ChainMap', 'UserDict', 'UserList', 'UserString', 'abc']
+>>> import distance_matrix.models.coordinates
+>>> distance_matrix.__path__
+['c:\\git\\alanisaac\\python-workshop\\src\\distance_matrix']
+>>> distance_matrix.models.coordinates.__package__
+'distance_matrix.models'
+>>> distance_matrix.models.__dict__.keys()
+dict_keys(['__name__', '__doc__', '__package__', '__loader__', '__spec__', '__path__', '__file__', '__cached__', '__builtins__', 'coordinates'])
 ```
 
-Notice how `abc` (along with other classes and functions) are simply attributes of the `collections` module.
+Notice how `coordinates` is simply an attribute of the `distance_matrix.models` package.
 
 The important thing to understand about modules and packages is that they are not special or magic: they're just objects with attributes.
 
-### Finding Modules
+### Resolving Modules
 
-_TODO: sys.path_
+The module resolution process is complicated, but what follows is a simplified version:
+
+Resolving modules has two primary variables:
+
+- a module **name** (what to look for)
+- a module **search path** (where to look for it)
+
+We'll start with the search path.  The search path has three parts:
+
+- The current folder from which the program executes (represented by an empty string `''`).
+- A list of folders specified in the `$PYTHONPATH` environment variable.
+- An installation-dependent list of folders from your Python installation.
+
+This is all stored in `sys.path`:
+
+```py
+>>> import sys; sys.path
+['', 'C:\\Python38\\python38.zip', 'C:\\Python38\\DLLs', 'C:\\Python38\\lib', 'C:\\Python38', 'C:\\git\\alanisaac\\python-workshop\\.env', 'C:\\git\\alanisaac\\python-workshop\\.env\\lib\\site-packages', 'c:\\git\\alanisaac\\python-workshop\\src']
+```
+
+Module names are defined by absolute imports, such as `from collections import abc`.  A **relative import** defines the module name relative to the current one, such as `from . import calculators`.  Importantly, the relative import navigates up the package / module hierarchy, not the file system.
+
+Lets see how module names and search paths can combine to produce some common pitfalls.
+
+When you run the Python interpreter, the current directory is part of the search path.  Let's see what that does to importing a module.  First, navigate inside the models folder:
+
+```sh
+cd src/distance_matrix/models
+```
+
+Then, open an interpreter and import the coordinates module:
+
+```py
+>>> import coordinates
+>>> coordinates.__package__
+''
+>>> coordinates.__name__
+'coordinates'
+```
+
+Compare this to our earlier results when we imported `distance_matrix.models.coordinates` from the root directory.  But this is problematic for relative imports!  Try adding a relative import to this file:
+
+```py
+from .location import Location
+```
+
+And import it again:
+
+```py
+>>> import coordinates
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "C:\git\alanisaac\python-workshop\src\distance_matrix\models\coordinates.py", line 2, in <module>
+    from .location import Location
+ImportError: attempted relative import with no known parent package
+```
+
+The important thing to understand here is: how you import modules affects the package hierarchy.
+
+> In the `src` layout we're using, notice that there is no `__init__.py` under `src`.  Where is `distance_matrix` being imported from?  Why do we _not_ want to add `./src/__init__.py`? 
+
+### Common Pitfalls
+
+- Run interpreters / scripts from the root of a workspace to get the right `sys.path`
+- Be careful adding package directories, especially subdirectories, to `sys.path` (or `$PYTHONPATH`)
+- Don't forget `__init__.py` to mark packages
 
 See also: [Python docs on `import`](https://docs.python.org/3/reference/import.html)
