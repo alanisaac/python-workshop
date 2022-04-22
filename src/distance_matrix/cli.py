@@ -3,8 +3,8 @@ import argparse
 
 def _get_arg_parser() -> argparse.ArgumentParser:
     arg_parser = argparse.ArgumentParser()
+    arg_parser.add_argument("-a", "--asyncio", action='store_true')
     arg_parser.add_argument("input", nargs=1)
-    arg_parser.add_argument("asyncio", action='store_true')
     return arg_parser
 
 

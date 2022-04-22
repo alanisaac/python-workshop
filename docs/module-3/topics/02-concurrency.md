@@ -30,7 +30,7 @@ Open up [executors.py](../../../src/distance_matrix/executors.py) and look at th
 Next, open up [main.py](../../../src/distance_matrix/main.py), and see which executor we are using in `run`.  Note also that we are timing the execution of this function.  Try running the `distance_matrix` module like so:
 
 ```sh
-python -m distance_matrix tests/integration/data/locations.csv
+python -m distance_matrix tests/integration/data/many_locations.csv
 ```
 
 And observe that the time taken is printed.  Change this out for the threaded implementation like so:

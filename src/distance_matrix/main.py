@@ -18,7 +18,7 @@ def run(path: str) -> None:
     executor = executors.basic_executor(calculator)
     output_records = executor(locations)
     end_time = time.perf_counter()
-    print(f"{end_time - start_time:.20f}")
+    print(f"Calc time: {end_time - start_time:.20f}")
 
     output_path = pathlib.Path(path).parent / "output.csv"
     outputs.write_output(str(output_path), output_records)
@@ -27,8 +27,12 @@ def run(path: str) -> None:
 def main() -> int:
     args = cli.get_args()
     path = args.input[0]
+
+    start_time = time.perf_counter()
     if args.asyncio:
         asyncio.run(async_runner.run(path))
     else:
         run(path)
+    end_time = time.perf_counter()
+    print(f"Total time: {end_time - start_time}")
     return 0
