@@ -300,10 +300,30 @@ We can check what the module looks like with `__dict__`:
 {'__name__': 'm', '__doc__': None, '__package__': None, '__loader__': None, '__spec__': None}
 ```
 
-That dictionary may not look special, but a module's dictionary is incredibly important.  It's actually the same dictionary that holds global variables (`globals()`).  
+That dictionary may not look special, but a module's dictionary is incredibly important.  It's actually the same dictionary that holds global variables (`globals()`).
 
-When Python imports a Python file, it creates a new module object and then executes the contents of the file using the dictionary of the module object as the dictionary of global variables.  That's how executing things like `__name__` and `__file__` work: they're ultimately the attributes of the currently executing module.
+When Python imports a Python file, it creates a new module object and then executes the contents of the file using the dictionary of the module object as the dictionary of global variables.  That's how global attributes like `__name__` work: they're ultimately the attributes of the currently executing module object.
 
-_TODO: packages and sys.path_
+### Packages
+
+Let's try importing a real package, and looking at some of its attributes:
+
+```py
+>>> import collections.abc
+>>> collections.__path__
+['C:\\Python38\\lib\\collections']
+>>> collections.abc.__package__
+'collections'
+>>> [key for key in collections.__dict__.keys() if not key.startswith("_")]
+['deque', 'defaultdict', 'OrderedDict', 'namedtuple', 'Counter', 'ChainMap', 'UserDict', 'UserList', 'UserString', 'abc']
+```
+
+Notice how `abc` (along with other classes and functions) are simply attributes of the `collections` module.
+
+The important thing to understand about modules and packages is that they are not special or magic: they're just objects with attributes.
+
+### Finding Modules
+
+_TODO: sys.path_
 
 See also: [Python docs on `import`](https://docs.python.org/3/reference/import.html)
