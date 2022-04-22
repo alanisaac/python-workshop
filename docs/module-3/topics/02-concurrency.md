@@ -112,6 +112,8 @@ Note how it takes 1s to run rather than 5s, indicating that sleep does not wait.
 
 _TODO_
 
+> Note: note how in our integration tests, we're also using a special `@pytest.mark.asyncio` decorator to mark tests asynchronous.  See the `pytest-asyncio` library ([GitHub](https://github.com/pytest-dev/pytest-asyncio)) for more details on that extension.
+
 See also:
 - [Python Asyncio (series)](https://bbc.github.io/cloudfit-public-docs/asyncio/asyncio-part-1.html)
 

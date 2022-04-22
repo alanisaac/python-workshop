@@ -1,7 +1,9 @@
 import filecmp
 from pathlib import Path
 
-from distance_matrix.main import run
+import pytest
+
+from distance_matrix import async_runner, main
 
 
 def test_run_calculates_distances():
@@ -9,6 +11,17 @@ def test_run_calculates_distances():
     output_file = Path(__file__).parent / "data" / "output.csv"
     expected_file = Path(__file__).parent / "data" / "expected_output.csv"
 
-    _ = run(data_file)
+    _ = main.run(data_file)
+
+    assert filecmp.cmp(output_file, expected_file)
+
+
+@pytest.mark.asyncio
+async def test_async_run_calculates_distances():
+    data_file = Path(__file__).parent / "data" / "locations.csv"
+    output_file = Path(__file__).parent / "data" / "output.csv"
+    expected_file = Path(__file__).parent / "data" / "expected_output.csv"
+
+    _ = await async_runner.run(data_file)
 
     assert filecmp.cmp(output_file, expected_file)
