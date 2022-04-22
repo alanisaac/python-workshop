@@ -121,8 +121,8 @@ File I/O actually isn't a great example.  While there are libraries to work with
 So instead in this demo, we're going to fake some I/O bound work.  But first, let's look at some of the async code in our distance matrix calculator.  Open up [main.py](../../../src/distance_matrix/main.py), and see how we're calling `async_runner.run` if the `asyncio` arg is provided.  Try running the distance matrix calculator in two ways:
 
 ```sh
-python -m distance_matrix tests/integration/data/locations.csv
-python -m distance_matrix tests/integration/data/locations.csv --asyncio
+python -m distance_matrix tests/integration/data/five_locations.csv
+python -m distance_matrix tests/integration/data/five_locations.csv --asyncio
 ```
 
 The `asyncio` version should take slightly longer to run, as we haven't introduced any fake I/O-bound work.  Let's look at the implementation in [async_runner.py](../../../src/distance_matrix/async_runner.py):
@@ -155,11 +155,13 @@ Let's introduce our fake work. in both [inputs.py](../../../src/distance_matrix/
 This pretends we have half a second of I/O work per row both reading and writing.  Now let's run the application again.
 
 ```sh
-python -m distance_matrix tests/integration/data/locations.csv
-python -m distance_matrix tests/integration/data/locations.csv --asyncio
+python -m distance_matrix tests/integration/data/five_locations.csv
+python -m distance_matrix tests/integration/data/five_locations.csv --asyncio
 ```
 
 Which is faster now?
+
+> If you want to see the order of execution, try adding `print("read")` and `print("write")` statements next to the sleeps for both sync and async.  The major time saver is that the read and write "work" can happen at the same time.
 
 ### Asyncio and Testing 
 
