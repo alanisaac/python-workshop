@@ -1,6 +1,7 @@
 import argparse
 import csv
 import pathlib
+import time
 from typing import Iterable, List, Sequence
 
 from . import calculators
@@ -44,9 +45,12 @@ def run(path: str) -> int:
     for row in data:
         locations.append(parse_input(row))
 
+    start_time = time.perf_counter()
     calculator = calculators.haversine()
-    executor = executors.basic_executor(calculator)
+    executor = executors.threaded_executor(calculator)
     output_records = executor(locations)
+    end_time = time.perf_counter()
+    print(f"{end_time - start_time:.20f}")
 
     output_path = pathlib.Path(path).parent / "output.csv"
     write_output(str(output_path), output_records)
