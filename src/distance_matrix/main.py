@@ -47,7 +47,7 @@ def run(path: str) -> int:
 
     start_time = time.perf_counter()
     calculator = calculators.haversine()
-    executor = executors.threaded_executor(calculator)
+    executor = executors.basic_executor(calculator)
     output_records = executor(locations)
     end_time = time.perf_counter()
     print(f"{end_time - start_time:.20f}")

@@ -21,9 +21,45 @@ See also:
 
 ## Threading
 
-Let's put this into practice with Threads.
+Let's put this into practice with threads.  A thread is a separate flow of execution in a single process.
 
-_TODO_
+Calculating distances between two points in a distance matrix calculator is an embarrassingly parallel problem: each distance calculation is entirely independent from the others.  So we _could_ try to maximize parallelism by dividing every calculation into its own thread.  
+
+Open up [executors.py](../../../src/distance_matrix/executors.py) and look at the implementation of `threaded_executor`.  This implementation uses a `Queue` to gather results from multiple threads.
+
+Next, open up [main.py](../../../src/distance_matrix/main.py), and see which executor we are using in `run`.  Note also that we are timing the execution of this function.  Try running the `distance_matrix` module like so:
+
+```sh
+python -m distance_matrix tests/integration/data/locations.csv
+```
+
+And observe that the time taken is printed.  Change this out for the threaded implementation like so:
+
+```py
+executor = executors.threaded_executor(calculator)
+```
+
+Run the module again.  Was it faster or slower?
+
+Threads come with their own overhead, so putting every calculation in its own thread may not be the most efficient way of performing these calculations.
+
+What if we tried using a fixed number of threads?  This pattern is called a **thread pool**.  There are a couple implementations in Python, but we can make a simple thread pool of our own to demonstrate how they work.  Open up [concurrency/thread_pool.py](../../../src/distance_matrix/concurrency/thread_pool.py).
+
+Change out the executor for the threadpool implementation like so:
+
+```py
+executor = executors.threadpool_executor(calculator)
+```
+
+> Notice in the `executors` module that we declare the `_THREAD_POOL` outside the `threadpool_executor` function, so we are not including its initialization time in the performance timing.
+
+Run the module again.  Was it faster or slower?
+
+The threadpool is better than individual threads, but still worse than the basic implementation.  Why is that?  There is still some overhead of threading which adds time, but importantly, the work isn't being done in parallel.
+
+> It's hard to separate the significant overhead of creating threads from the time of the work being done.  For a more apples-to-apples comparison, try changing the number of threads in the thread pool and re-running.
+
+To understand why this is slower, we'll need to talk about...
 
 ## CPython and the GIL
 

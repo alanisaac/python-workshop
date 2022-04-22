@@ -1,26 +1,14 @@
 import multiprocessing as mp
 from queue import Queue
 from threading import Thread
-from typing import List, Sequence, Protocol, Tuple, TypeVar
+from typing import List, Sequence, Protocol, Tuple
 
 from .calculators import DistanceCalculator
+from .concurrency.queue import QueueProtocol
+from .concurrency.thread_pool import ThreadPool
 from .models.location import Location
 from .models.output import Output
 from .utils import permutations
-
-
-_T = TypeVar("_T")
-
-
-class QueueProtocol(Protocol[_T]):
-    def get(self) -> _T:
-        ...
-
-    def empty(self) -> bool:
-        ...
-
-    def put(self, value: _T) -> None:
-        ...
 
 
 class Executor(Protocol):
@@ -29,6 +17,9 @@ class Executor(Protocol):
         locations: Sequence[Location]
     ) -> Sequence[Output]:
         ...
+
+
+_THREAD_POOL = ThreadPool(2)
 
 
 def basic_executor(calculator: DistanceCalculator) -> Executor:
@@ -84,11 +75,34 @@ def threaded_executor(calculator: DistanceCalculator) -> Executor:
     return execute
 
 
+def threadpool_executor(calculator: DistanceCalculator) -> Executor:
+    def execute(locations: Sequence[Location]) -> Sequence[Output]:
+        output_records: List[Output] = []
+        results_queue: QueueProtocol[Output] = Queue()
+        for pair in permutations(locations):
+            _THREAD_POOL.add(
+                calculate_threaded,
+                calculator,
+                pair,
+                results_queue
+            )
+
+        _THREAD_POOL.wait_for_completion()
+
+        while not results_queue.empty():
+            output = results_queue.get()
+            output_records.append(output)
+
+        return output_records
+
+    return execute
+
+
 def multiprocessing_executor(calculator: DistanceCalculator) -> Executor:
     def execute(locations: Sequence[Location]) -> Sequence[Output]:
         output_records: List[Output] = []
         processes: List[mp.Process] = []
-        results_queue: QueueProtocol[Output] = mp.Queue()
+        results_queue: QueueProtocol[Output] = mp.JoinableQueue()
         for pair in permutations(locations):
             new_process = mp.Process(
                 target=calculate_threaded,
