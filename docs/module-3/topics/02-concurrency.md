@@ -11,11 +11,17 @@ Some clarifying examples:
 - I can declare my code asynchronous, but my language or framework might execute it sequentially rather than concurrently.
 - I can have concurrently executing tasks, but because I only have one thread of execution, they do not execute in parallel.
 
+To help illustrate these concepts:
+
+![parallelism and asynchrony](./asynchronous.png)
+
 See also:
 - [Concurrent Computing (wikipedia)](https://en.wikipedia.org/wiki/Concurrent_computing)
 - [Asynchrony (wikipedia)](https://en.wikipedia.org/wiki/Asynchrony_(computer_programming))
 
 ## Threading
+
+Let's put this into practice with Threads.
 
 _TODO_
 
