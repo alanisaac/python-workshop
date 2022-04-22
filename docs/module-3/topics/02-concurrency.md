@@ -98,7 +98,15 @@ So: many libraries that perform CPU-intensive number crunching, such as [array m
 
 > If the GIL in CPython is problematic, should you use a different implementation?  Beware of premature optimization, and be extremely cautious with other implementations like PyPy as [support and tooling](https://stackoverflow.com/a/18946824) may or may not meet your needs.
 
-_TODO: Example of the GIL in action_
+Another function that releases the GIL is `time.sleep()` (after all, if one thread sleeps, other threads can do work).
+
+To see this in action, take a look at [gil.py](../gil.py) in this topic.  Run it with:
+
+```sh
+python docs/module-3/gil.py
+```
+
+Note how it takes 1s to run rather than 5s, indicating that sleep does not wait.  If we replaced `time.sleep` with 1s worth of CPU-bound work, the script would take 5s to run instead.
 
 ## Asyncio
 
