@@ -1,14 +1,14 @@
 import multiprocessing as mp
 from queue import Queue
 from threading import Thread
-from typing import List, Sequence, Protocol, Tuple
+from typing import AsyncIterable, List, Sequence, Protocol, Tuple
 
 from .calculators import DistanceCalculator
 from .concurrency.queue import QueueProtocol
 from .concurrency.thread_pool import ThreadPool
 from .models.location import Location
 from .models.output import Output
-from .utils import permutations
+from .utils import permutations, permutations_async
 
 
 class Executor(Protocol):
@@ -16,6 +16,14 @@ class Executor(Protocol):
         self,
         locations: Sequence[Location]
     ) -> Sequence[Output]:
+        ...
+
+
+class AsyncExecutor(Protocol):
+    def __call__(
+        self,
+        locations: AsyncIterable[Location]
+    ) -> AsyncIterable[Output]:
         ...
 
 
@@ -123,5 +131,15 @@ def multiprocessing_executor(calculator: DistanceCalculator) -> Executor:
             output_records.append(output)
 
         return output_records
+
+    return execute
+
+
+def asyncio_executor(calculator: DistanceCalculator) -> AsyncExecutor:
+    async def execute(locations: AsyncIterable[Location]) -> AsyncIterable[Output]:
+        async for location_1, location_2 in permutations_async(locations):
+            distance = calculator(location_1.coordinates, location_2.coordinates)
+            output = Output(location_1.name, location_2.name, distance)
+            yield output
 
     return execute

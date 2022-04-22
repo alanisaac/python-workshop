@@ -1,5 +1,7 @@
+from aiocsv import AsyncReader
+import aiofiles
 import csv
-from typing import Iterable, Sequence
+from typing import AsyncIterable, Iterable, Sequence
 
 from .models.coordinates import Coordinates
 from .models.location import Location
@@ -25,3 +27,10 @@ def read_input(path: str) -> Iterable[Location]:
     for row in data:
         location = _parse_input(row)
         yield location
+
+
+async def read_input_async(path: str) -> AsyncIterable[Location]:
+    async with aiofiles.open(path, "r") as input_file:
+        async for row in AsyncReader(input_file):
+            location = _parse_input(row)
+            yield location
