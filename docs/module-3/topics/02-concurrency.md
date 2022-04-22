@@ -110,11 +110,62 @@ Note how it takes 1s to run rather than 5s, indicating that sleep does not wait.
 
 ## Asyncio
 
-_TODO_
+The `async` and `await` keywords are essentially ways of denoting code _can_ be executed concurrently in an application.  You might often see the word **coroutine** to denote async functions: this is in contrast with **subroutine** (I.E.: a normal function).  They are most often run using `asyncio`, which is a built-in framework for executing coroutines.
 
-While libraries exist to turn file operations into `async` functions (like `aiofiles`), they _can_ end up being slower than their synchronous counterparts.  See the [asyncio wiki](https://github.com/python/asyncio/wiki/ThirdParty#filesystem) and [this StackOverflow answer](https://stackoverflow.com/a/60030750) for more on why.
+`asyncio` does not magically make the GIL issues above go away!  We just discussed previously how I/O-bound operations don't lock the GIL.  Using `asyncio` along with `asyncio` libraries just introduces a different mechanism of navigating around I/O bound operations -- using cooperative multitasking instead of threads.
 
-> Note: note how in our integration tests, we're also using a special `@pytest.mark.asyncio` decorator to mark tests asynchronous.  See the `pytest-asyncio` library ([GitHub](https://github.com/pytest-dev/pytest-asyncio)) for more details on that extension.
+Let's see how this works in practice.  Our distance matrix library is based around file I/O, which should be perfect to demonstrate something I/O bound, right?  Except...
+
+File I/O actually isn't a great example.  While there are libraries to work with files using `async` functions (like `aiofiles`), they can often end up being slower than their synchronous counterparts.  See the [asyncio wiki](https://github.com/python/asyncio/wiki/ThirdParty#filesystem) and [this StackOverflow answer](https://stackoverflow.com/a/60030750) for more on why.
+
+So instead in this demo, we're going to fake some I/O bound work.  But first, let's look at some of the async code in our distance matrix calculator.  Open up [main.py](../../../src/distance_matrix/main.py), and see how we're calling `async_runner.run` if the `asyncio` arg is provided.  Try running the distance matrix calculator in two ways:
+
+```sh
+python -m distance_matrix tests/integration/data/locations.csv
+python -m distance_matrix tests/integration/data/locations.csv --asyncio
+```
+
+The `asyncio` version should take slightly longer to run, as we haven't introduced any fake I/O-bound work.  Let's look at the implementation in [async_runner.py](../../../src/distance_matrix/async_runner.py):
+
+```py
+async def run(path: str) -> None:
+    input_queue: AsyncQueueProtocol[Location] = Queue()
+    output_queue: AsyncQueueProtocol[Output] = Queue()
+
+    input_task = asyncio.create_task(_read_inputs_task(input_queue, path))
+    _ = asyncio.create_task(_calculate_task(input_queue, output_queue))
+    _ = asyncio.create_task(_write_task(output_queue, path))
+
+    await input_task
+    await input_queue.join()
+    await output_queue.join()
+```
+
+This function is implemented using a producer-consumer queue design.  There are three asynchronous tasks, separated by queues:
+
+![](./producer-consumer-queues.png)
+
+Because each task is marked `async`, at any given time it may yield execution to a different task.  If we pretend reading inputs or writing outputs (or both) is I/O bound work, we can see how this is beneficial.  While waiting on the next input row, for example, we can use the CPU to perform a distance matrix calculation, or initiate a write.
+
+Let's introduce our fake work. in both [inputs.py](../../../src/distance_matrix/inputs.py) and [outputs.py](../../../src/distance_matrix/outputs.py):
+- import both `time` and `asyncio`
+- in the synchronous function, add `time.sleep(0.5)` within the `for` loop
+- in the asynchronous function, add `await asyncio.sleep(0.5)` within the `async for` loop
+
+This pretends we have half a second of I/O work per row both reading and writing.  Now let's run the application again.
+
+```sh
+python -m distance_matrix tests/integration/data/locations.csv
+python -m distance_matrix tests/integration/data/locations.csv --asyncio
+```
+
+Which is faster now?
+
+### Asyncio and Testing 
+
+Take a look at the [test_distance_matrix.py](../../../tests/integration/test_distance_matrix.py) integration tests.  Note how we're using a special `@pytest.mark.asyncio` decorator to tell `pytest` that tests should be run asynchronously.
+
+See the `pytest-asyncio` library ([GitHub](https://github.com/pytest-dev/pytest-asyncio)) for more details on that extension.
 
 See also:
 - [Python Asyncio (series)](https://bbc.github.io/cloudfit-public-docs/asyncio/asyncio-part-1.html)
@@ -123,8 +174,17 @@ See also:
 
 _TODO_
 
-## A Note on Performance
+## Wrapping Up
 
-Premature optimization: prove it
+We introduced a number of concepts for concurrency in Python.  A good rule of thumb is:
+
+- If your work is I/O bound (HTTP calls, database calls, etc.), consider `asyncio`
+- If your work is CPU bound (number crunching, object manipulation, etc.), consider `multiprocessing`
+
+In the next topic, we'll dive into other libraries used for fast number crunching, and learn what makes them tick.
+
+### Performance Optimization
+
+One final note.  Premature optimization: prove it
 
 _TODO_
