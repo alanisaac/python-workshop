@@ -1,5 +1,7 @@
 from typing import AsyncIterable, Iterable, List, Tuple, TypeVar
 
+from .concurrency.queue import AsyncQueueProtocol
+
 
 _T = TypeVar("_T")
 
@@ -33,3 +35,12 @@ async def permutations_async(
             yield (second, first)
         count += 1
         existing.append(first)
+
+
+async def consume(queue: AsyncQueueProtocol[_T]) -> AsyncIterable[_T]:
+    while True:
+        item = await queue.get()
+        try:
+            yield item
+        finally:
+            queue.task_done()

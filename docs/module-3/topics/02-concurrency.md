@@ -112,6 +112,8 @@ Note how it takes 1s to run rather than 5s, indicating that sleep does not wait.
 
 _TODO_
 
+While libraries exist to turn file operations into `async` functions (like `aiofiles`), they _can_ end up being slower than their synchronous counterparts.  See the [asyncio wiki](https://github.com/python/asyncio/wiki/ThirdParty#filesystem) and [this StackOverflow answer](https://stackoverflow.com/a/60030750) for more on why.
+
 > Note: note how in our integration tests, we're also using a special `@pytest.mark.asyncio` decorator to mark tests asynchronous.  See the `pytest-asyncio` library ([GitHub](https://github.com/pytest-dev/pytest-asyncio)) for more details on that extension.
 
 See also:

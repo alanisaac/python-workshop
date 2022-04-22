@@ -8,7 +8,7 @@ from .concurrency.queue import QueueProtocol
 from .concurrency.thread_pool import ThreadPool
 from .models.location import Location
 from .models.output import Output
-from .utils import permutations, permutations_async
+from .utils import permutations
 
 
 class Executor(Protocol):
@@ -131,15 +131,5 @@ def multiprocessing_executor(calculator: DistanceCalculator) -> Executor:
             output_records.append(output)
 
         return output_records
-
-    return execute
-
-
-def asyncio_executor(calculator: DistanceCalculator) -> AsyncExecutor:
-    async def execute(locations: AsyncIterable[Location]) -> AsyncIterable[Output]:
-        async for location_1, location_2 in permutations_async(locations):
-            distance = calculator(location_1.coordinates, location_2.coordinates)
-            output = Output(location_1.name, location_2.name, distance)
-            yield output
 
     return execute

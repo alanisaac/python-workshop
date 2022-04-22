@@ -126,8 +126,6 @@ tomli==2.0.1
     #   pytest
 twine==4.0.0
     # via -r dev-requirements.in
-types-aiofiles==0.8.8
-    # via -r dev-requirements.in
 typing-extensions==4.1.1
     # via
     #   black
