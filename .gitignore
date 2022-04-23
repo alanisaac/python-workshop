@@ -154,4 +154,7 @@ cython_debug/
 
 # integration test output
 tests/integration/data/output.csv
-tests/integration/data/output/*
+tests/integration/data/output/
+
+# dask
+dask-worker-space/
