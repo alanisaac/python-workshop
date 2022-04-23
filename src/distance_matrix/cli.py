@@ -6,6 +6,7 @@ class Runner(Enum):
     STANDARD = 'standard'
     ASYNCIO = 'asyncio'
     PANDAS = 'pandas'
+    DASK = 'dask'
 
     def __str__(self):
         return self.value

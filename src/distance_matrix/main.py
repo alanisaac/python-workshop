@@ -3,6 +3,7 @@ import time
 
 from .calculators.functional import haversine
 from . import async_runner
+from . import dask_runner
 from . import cli
 from . import executors
 from . import inputs
@@ -36,6 +37,8 @@ def main() -> int:
         asyncio.run(async_runner.run(path))
     elif args.runner == cli.Runner.PANDAS:
         pandas_runner.run(path)
+    elif args.runner == cli.Runner.DASK:
+        dask_runner.run(path)
     else:
         raise ValueError(f"The runner '{args.runner}' is not supported")
 
