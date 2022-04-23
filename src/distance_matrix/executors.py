@@ -4,6 +4,7 @@ from threading import Thread
 from typing import AsyncIterable, List, Sequence, Protocol, Tuple
 
 from .calculators.functional import DistanceCalculator
+from .calculators.objects import DistanceCalculator as DistanceCalculatorClass
 from .concurrency.queue import QueueProtocol
 from .concurrency.thread_pool import ThreadPool
 from .models.location import Location
@@ -106,7 +107,7 @@ def threadpool_executor(calculator: DistanceCalculator) -> Executor:
     return execute
 
 
-def multiprocessing_executor(calculator: DistanceCalculator) -> Executor:
+def multiprocessing_executor(calculator: DistanceCalculatorClass) -> Executor:
     def execute(locations: Sequence[Location]) -> Sequence[Output]:
         output_records: List[Output] = []
         processes: List[mp.Process] = []
@@ -115,7 +116,7 @@ def multiprocessing_executor(calculator: DistanceCalculator) -> Executor:
             new_process = mp.Process(
                 target=calculate_threaded,
                 args=(
-                    calculator,
+                    calculator.calculate_distance,
                     pair,
                     results_queue
                 )
