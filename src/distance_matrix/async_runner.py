@@ -1,6 +1,5 @@
 import asyncio
 from asyncio import Queue
-import pathlib
 
 from . import calculators
 from . import inputs
@@ -31,9 +30,9 @@ async def _calculate_task(
 
 
 async def _write_task(input: AsyncQueueProtocol[Output], path: str) -> None:
-    output_path = pathlib.Path(path).parent / "output.csv"
+    output_path = outputs.get_output_path(path)
     output_records = utils.consume(input)
-    await outputs.write_output_async(str(output_path), output_records)
+    await outputs.write_output_async(output_path, output_records)
 
 
 async def run(path: str) -> None:

@@ -1,7 +1,12 @@
 import csv
+import pathlib
 from typing import AsyncIterable, Iterable
 
 from .models.output import Output
+
+
+def get_output_path(input_path: str) -> str:
+    return str(pathlib.Path(input_path).parent / "output.csv")
 
 
 def write_output(path: str, output_records: Iterable[Output]) -> None:

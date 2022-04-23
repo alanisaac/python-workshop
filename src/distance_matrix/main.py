@@ -1,5 +1,4 @@
 import asyncio
-import pathlib
 import time
 
 from . import async_runner
@@ -21,8 +20,8 @@ def run(path: str) -> None:
     end_time = time.perf_counter()
     print(f"Calc time: {end_time - start_time:.20f}")
 
-    output_path = pathlib.Path(path).parent / "output.csv"
-    outputs.write_output(str(output_path), output_records)
+    output_path = outputs.get_output_path(path)
+    outputs.write_output(output_path, output_records)
 
 
 def main() -> int:
