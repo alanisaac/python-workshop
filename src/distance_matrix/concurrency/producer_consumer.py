@@ -6,6 +6,12 @@ _T = TypeVar("_T")
 
 
 class _Sentinel(Enum):
+    """
+    A sentinel value indicating the end of work in a producer / consumer queue.
+
+    See https://github.com/python/typing/issues/689
+    for more on this approach to sentinels.
+    """
     VALUE = 0
 
 
