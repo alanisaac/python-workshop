@@ -68,7 +68,7 @@ def permutations(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def run(path: str) -> None:
-    df = pd.read_csv(path, names=["City", "Latitude", "Longitude"])
+    df = pd.read_csv(path, names=np.array(["City", "Latitude", "Longitude"]))
     df = permutations(df)
 
     start_time = time.perf_counter()
@@ -82,7 +82,7 @@ def run(path: str) -> None:
     end_time = time.perf_counter()
     print(f"Calc time: {end_time - start_time:.20f}")
 
-    df = pd.concat([df, distances], axis=1)
+    df = pd.concat([df, pd.Series(distances)], axis=1)
     df = df.drop(
         [
             "Latitude_Origin",

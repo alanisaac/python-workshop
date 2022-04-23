@@ -2,6 +2,7 @@ black
 isort
 flake8
 mypy
+pandas-stubs
 pip-tools
 pydocstyle
 pytest
