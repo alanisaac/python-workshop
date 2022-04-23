@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 import time
 
-from .calculators.numpy import HaversineCalculator
+from .calculators.numpy import HaversineCalculator, NumpyDistanceCalculator
 from . import outputs
 
 
@@ -27,12 +27,8 @@ def permutations(df: pd.DataFrame) -> pd.DataFrame:
     )
 
 
-def run(path: str) -> None:
-    df = pd.read_csv(path, names=np.array(["City", "Latitude", "Longitude"]))
-    df = permutations(df)
-
+def calculate(df: pd.DataFrame, calculator: NumpyDistanceCalculator) -> pd.DataFrame:
     start_time = time.perf_counter()
-    calculator = HaversineCalculator()
     distances = calculator.calculate_distance(
         df["Latitude_Origin"],
         df["Longitude_Origin"],
@@ -42,14 +38,26 @@ def run(path: str) -> None:
     end_time = time.perf_counter()
     print(f"Calc time: {end_time - start_time:.20f}")
 
-    output_path = outputs.get_output_path(path)
     df = pd.concat([df, pd.Series(distances)], axis=1)
-    df.drop(
-        [
-            "Latitude_Origin",
-            "Longitude_Origin",
-            "Latitude_Destination",
-            "Longitude_Destination",
-        ],
-        axis=1,
-    ).to_csv(output_path, index=False, header=False)
+    return df
+
+
+def run(path: str) -> None:
+    output_path = outputs.get_output_path(path)
+    calculator = HaversineCalculator()
+
+    _ = (
+        pd.read_csv(path, names=np.array(["City", "Latitude", "Longitude"]))
+        .pipe(permutations)
+        .pipe(calculate, calculator)
+        .drop(
+            [
+                "Latitude_Origin",
+                "Longitude_Origin",
+                "Latitude_Destination",
+                "Longitude_Destination",
+            ],
+            axis=1,
+        )
+        .to_csv(output_path, index=False, header=False)
+    )

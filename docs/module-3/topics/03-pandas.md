@@ -51,6 +51,18 @@ Try this with differently sized data sets:
 
 Notice how the calculation times compare.  There is overhead to using `pandas`, but it can be much faster on larger data sets.
 
+## Pandas Best Practices
+
+The following tips are mainly summarized from [Modern Pandas series by Tom Augspurger](https://tomaugspurger.github.io/modern-1-intro) (a `pandas` maintainer):
+
+- **Style**:
+  - **Method Chaining**: method chaining is the practice of chaining together functions in `pandas` (that style is used in this workshop).  Generally it's a matter of personal preference, but if you do, be aware of `DataFrame.pipe` ([docs](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.pipe.html)).
+  - **Avoid Inplace**: most `pandas` functions have the ability to execute `inplace`.  You might think it saves on copying / memory, but in practice it often does not. 
+- **Performance**:
+  - **Vectorize**: As we saw previously, there is a marked difference in performance between iterating data and vectorized operations.  Prefer vectorized operations to iterating with `for` or ``DataFrame.apply`.
+  - **Datatypes**: Prefer using numeric `dtype` columns for numeric fields to get the most of of `numpy` optimizations.  You can check the `dtype` of your columns with `DataFrame.dtypes` (also take advantage of [categoricals](https://pandas.pydata.org/pandas-docs/version/0.18.0/categorical.html) for enum-like values).
+
+
 ## Recommended Dependencies
 
 _TODO_
