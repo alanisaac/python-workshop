@@ -19,12 +19,12 @@ Then, in an interpreter, let's compare a vectorized operation with a simple `for
 >>> from timeit import timeit
 >>> def total():
 ...     total = 0
-...     for i in np.arange(10000):
-...         total += i
+...     for i in range(10000):
+...         total += 1
 ...     return total
 ...
 >>> timeit(total, number=1000)
-1.1802237999999932
+0.42119919999999667
 >>> def total():
 ...     return np.sum(np.arange(10000))
 ...
