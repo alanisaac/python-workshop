@@ -4,7 +4,7 @@ from numpy.typing import ArrayLike
 import pandas as pd
 from typing import Protocol
 
-from . calculators import DEFAULT_EARTH_RADIUS_KM
+from . import const
 from . import outputs
 
 
@@ -20,7 +20,7 @@ class NumpyDistanceCalculator(Protocol):
 
 
 def haversine_numpy(
-    earth_radius_km: float = DEFAULT_EARTH_RADIUS_KM
+    earth_radius_km: float = const.DEFAULT_EARTH_RADIUS_KM
 ) -> NumpyDistanceCalculator:
     def calculate(
         lat1: ArrayLike,
