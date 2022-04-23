@@ -81,4 +81,29 @@ There are [many frameworks in Python](https://wiki.python.org/moin/ParallelProce
 
 Dask ([GitHub](https://github.com/dask/dask)) is a library for distributed computing, built to have a similar interface as `numpy`, `pandas`, and others.  It can run locally, scaling on a single machine, or deployed in a cluster of nodes via a [mechanism like](https://blog.dask.org/2020/07/23/current-state-of-distributed-dask-clusters) Kubernetes, AWS Fargate, or HPC job managers.
 
-_TODO_
+To get started with `dask`, you'll need both `dask` and the `distributed` package (if not already installed):
+
+```sh
+pip install dask[distributed]
+```
+
+Take a look at [dask_runner.py](../../../src/distance_matrix/dask_runner.py).  Notice that it's mostly the same as the `pandas` runner with a few differences:
+
+- The `pandas` dataframe is converted to a `dask` dataframe midway through processing, with 4 partitions
+- The outputs are defined as writing to `"output/*.csv"` files rather than a single file
+- We are initializing a `dask` cluster, and there are a couple `input` statements to introduce pauses
+
+Go ahead and run the application with the `dask` runner. When it prompts you for input, navigate to the provided dashboard link:
+
+```sh
+python -m distance_matrix tests/integration/data/many_locations.csv -r dask
+Press enter to continue, see dashboard at http://127.0.0.1:8787/status
+```
+
+With the dashboard open, go back to your terminal and press enter.  Observe that `dask` creates a performance dashboard of all the executed workers, including which steps took how much time:
+
+![](./dask-dashboard.png)
+
+Press enter again to complete the program.  Navigate to the created [output](../../../tests/integration/data/output/) folder under integration tests, and observe that there are 4 `csv` files numbered 0-3.
+
+> While we won't cover the features `dask` has to deploy across compute clusters, hopefully that gives you a flavor of how it can help scale out `pandas` and `numpy` driven workloads.
