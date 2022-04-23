@@ -187,6 +187,20 @@ In the next topic, we'll dive into other libraries used for fast number crunchin
 
 ### Performance Optimization
 
-One final note.  Premature optimization: prove it
+One final note.  In all of these cases, we've been discussing different approaches for scaling up our code, but we haven't paid special attention to _where we need performance_.
 
-_TODO_
+There's a quote attributed to Donald Knuth, author of _The Art of Computer Programming_, that "premature optimization is the root of all evil".  
+
+> There is no doubt that the grail of efficiency leads to abuse. Programmers waste enormous amounts of time thinking about, or worrying about, the speed of noncritical parts of their programs, and these attempts at efficiency actually have a strong negative impact when debugging and maintenance are considered. We should forget about small efficiencies, say about 97% of the time: premature optimization is the root of all evil.
+> 
+> Yet we should not pass up our opportunities in that critical 3%. A good programmer will not be lulled into complacency by such reasoning, he will be wise to look carefully at the critical code; but only after that code has been identified. It is often a mistake to make a priori judgements about what parts of a program are really critical, since the universal experience of programmers who have been using measurement tools has been that their intuitive guesses fail.
+
+[In other words](https://softwareengineering.stackexchange.com/a/80092), in the absence of measured performance issues you shouldn't optimize because you **think** you will get a performance gain.  Prove it!
+
+The Python ecosystem has a number of tools you can use for performance profiling.  We won't cover them in detail, but if you find yourself needing to improve performance of Python code, check them out:
+
+- `profile` and `cProfile` ([docs](https://docs.python.org/3/library/profile.html)): Python's built-in profilers
+- `pyinstrument` ([GitHub](https://github.com/joerick/pyinstrument)): another simple profiler, supports `asyncio` and has more helpful output
+- `py-spy` ([GitHub](https://github.com/benfred/py-spy)): does not require modifying your code, supports generating a flame graph
+- `scalene` ([GitHub](https://github.com/plasma-umass/scalene)): known for speed and an embedded GUI
+- `yappi` ([GitHub](https://github.com/sumerc/yappi)): "yet another Python profiler", supports correct timing for threads and `asyncio`
