@@ -2,6 +2,7 @@ import itertools
 import numpy as np
 import pandas as pd
 import time
+from typing import Iterable
 
 from .calculators.numpy import HaversineCalculator, NumpyDistanceCalculator
 from . import outputs
@@ -27,14 +28,14 @@ def permutations(df: pd.DataFrame) -> pd.DataFrame:
     )
 
 
-def calculate(df: pd.DataFrame, calculator: NumpyDistanceCalculator) -> pd.DataFrame:
+def calculate(
+    df: pd.DataFrame,
+    calculator: NumpyDistanceCalculator,
+    column_names: Iterable[str]
+) -> pd.DataFrame:
     start_time = time.perf_counter()
-    distances = calculator.calculate_distance(
-        df["Latitude_Origin"],
-        df["Longitude_Origin"],
-        df["Latitude_Destination"],
-        df["Longitude_Destination"],
-    )
+    columns = map(lambda x: df[x], column_names)
+    distances = calculator.calculate_distance(*columns)
     end_time = time.perf_counter()
     print(f"Calc time: {end_time - start_time:.20f}")
 
@@ -45,19 +46,17 @@ def calculate(df: pd.DataFrame, calculator: NumpyDistanceCalculator) -> pd.DataF
 def run(path: str) -> None:
     output_path = outputs.get_output_path(path)
     calculator = HaversineCalculator()
+    columns = [
+        "Latitude_Origin",
+        "Longitude_Origin",
+        "Latitude_Destination",
+        "Longitude_Destination",
+    ]
 
     _ = (
         pd.read_csv(path, names=np.array(["City", "Latitude", "Longitude"]))
         .pipe(permutations)
-        .pipe(calculate, calculator)
-        .drop(
-            [
-                "Latitude_Origin",
-                "Longitude_Origin",
-                "Latitude_Destination",
-                "Longitude_Destination",
-            ],
-            axis=1,
-        )
+        .pipe(calculate, calculator, columns)
+        .drop(columns, axis=1)
         .to_csv(output_path, index=False, header=False)
     )
