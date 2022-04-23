@@ -1,5 +1,5 @@
 from math import atan2, cos, radians, sin, sqrt
-from typing import Final, Protocol
+from typing import Protocol
 
 from .models.coordinates import Coordinates
 
@@ -11,7 +11,9 @@ class DistanceCalculator(Protocol):
         ...
 
 
-def haversine(earth_radius_km: float = const.DEFAULT_EARTH_RADIUS_KM) -> DistanceCalculator:
+def haversine(
+    earth_radius_km: float = const.DEFAULT_EARTH_RADIUS_KM
+) -> DistanceCalculator:
     def calculate(p1: Coordinates, p2: Coordinates) -> float:
         lat1 = radians(p1.latitude)
         lng1 = radians(p1.longitude)
@@ -29,7 +31,9 @@ def haversine(earth_radius_km: float = const.DEFAULT_EARTH_RADIUS_KM) -> Distanc
     return calculate
 
 
-def equirectangular(earth_radius_km: float = const.DEFAULT_EARTH_RADIUS_KM) -> DistanceCalculator:
+def equirectangular(
+    earth_radius_km: float = const.DEFAULT_EARTH_RADIUS_KM
+) -> DistanceCalculator:
     def calculate(p1: Coordinates, p2: Coordinates) -> float:
         lat1 = radians(p1.latitude)
         lng1 = radians(p1.longitude)
