@@ -81,6 +81,8 @@ There are [many frameworks in Python](https://wiki.python.org/moin/ParallelProce
 
 Dask ([GitHub](https://github.com/dask/dask)) is a library for distributed computing, built to have a similar interface as `numpy`, `pandas`, and others.  It can run locally, scaling on a single machine, or deployed in a cluster of nodes via a [mechanism like](https://blog.dask.org/2020/07/23/current-state-of-distributed-dask-clusters) Kubernetes, AWS Fargate, or HPC job managers.
 
+> Folks who have used Apache Spark might think this sounds _vaguely_ familiar, and you are not alone.  See Dask's [Comparison to Spark](https://docs.dask.org/en/latest/spark.html).
+
 To get started with `dask`, you'll need both `dask` and the `distributed` package (if not already installed):
 
 ```sh
