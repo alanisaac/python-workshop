@@ -1,9 +1,8 @@
 from math import atan2, cos, radians, sin, sqrt
 from typing import Protocol
 
-from .models.coordinates import Coordinates
-
-from . import const
+from ..models.coordinates import Coordinates
+from .. import const
 
 
 class DistanceCalculator(Protocol):

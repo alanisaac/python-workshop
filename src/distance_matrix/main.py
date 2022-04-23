@@ -1,8 +1,8 @@
 import asyncio
 import time
 
+from .calculators.functional import haversine
 from . import async_runner
-from . import calculators
 from . import cli
 from . import executors
 from . import inputs
@@ -14,7 +14,7 @@ def run(path: str) -> None:
     locations = list(inputs.read_input(path))
 
     start_time = time.perf_counter()
-    calculator = calculators.haversine()
+    calculator = haversine()
     executor = executors.basic_executor(calculator)
     output_records = executor(locations)
     end_time = time.perf_counter()

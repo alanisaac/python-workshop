@@ -2,10 +2,10 @@ import asyncio
 from asyncio import Queue
 from typing import AsyncIterable
 
-from . import calculators
 from . import inputs
 from . import outputs
 from . import utils
+from .calculators.functional import haversine
 from .concurrency.producer_consumer import AsyncQueueProtocol, consume, produce
 from .models.location import Location
 from .models.output import Output
@@ -23,7 +23,7 @@ async def _calculate_task(
     async def calculate() -> AsyncIterable[Output]:
         locations = consume(input)
         permutations = utils.permutations_async(locations)
-        calculator = calculators.haversine()
+        calculator = haversine()
         async for location_1, location_2 in permutations:
             distance = calculator(location_1.coordinates, location_2.coordinates)
             output_record = Output(location_1.name, location_2.name, distance)

@@ -3,7 +3,7 @@ from queue import Queue
 from threading import Thread
 from typing import AsyncIterable, List, Sequence, Protocol, Tuple
 
-from .calculators import DistanceCalculator
+from .calculators.functional import DistanceCalculator
 from .concurrency.queue import QueueProtocol
 from .concurrency.thread_pool import ThreadPool
 from .models.location import Location
