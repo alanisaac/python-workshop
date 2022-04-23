@@ -2,6 +2,7 @@ import itertools
 import numpy as np
 from numpy.typing import ArrayLike
 import pandas as pd
+import time
 from typing import Protocol
 
 from . import const
@@ -70,6 +71,7 @@ def run(path: str) -> None:
     df = pd.read_csv(path, names=["City", "Latitude", "Longitude"])
     df = permutations(df)
 
+    start_time = time.perf_counter()
     calculator = haversine_numpy()
     distances = calculator(
         df["Latitude_Origin"],
@@ -77,6 +79,9 @@ def run(path: str) -> None:
         df["Latitude_Destination"],
         df["Longitude_Destination"]
     )
+    end_time = time.perf_counter()
+    print(f"Calc time: {end_time - start_time:.20f}")
+
     df = pd.concat([df, distances], axis=1)
     df = df.drop(
         [
