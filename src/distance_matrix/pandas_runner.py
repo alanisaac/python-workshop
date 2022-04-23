@@ -11,23 +11,16 @@ from . import outputs
 
 class NumpyDistanceCalculator(Protocol):
     def __call__(
-        self,
-        lat1: ArrayLike,
-        lng1: ArrayLike,
-        lat2: ArrayLike,
-        lng2: ArrayLike
+        self, lat1: ArrayLike, lng1: ArrayLike, lat2: ArrayLike, lng2: ArrayLike
     ) -> ArrayLike:
         ...
 
 
 def haversine_numpy(
-    earth_radius_km: float = const.DEFAULT_EARTH_RADIUS_KM
+    earth_radius_km: float = const.DEFAULT_EARTH_RADIUS_KM,
 ) -> NumpyDistanceCalculator:
     def calculate(
-        lat1: ArrayLike,
-        lng1: ArrayLike,
-        lat2: ArrayLike,
-        lng2: ArrayLike
+        lat1: ArrayLike, lng1: ArrayLike, lat2: ArrayLike, lng2: ArrayLike
     ) -> ArrayLike:
         lng1, lat1, lng2, lat2 = map(np.radians, [lng1, lat1, lng2, lat2])
 
@@ -47,24 +40,22 @@ def haversine_numpy(
 
 def permutations(df: pd.DataFrame) -> pd.DataFrame:
     combinations = list(itertools.combinations(df.index, 2))
-
     index_columns = ["Origin_Index", "Destination_Index"]
-    result_df = pd.DataFrame(combinations, columns=index_columns)
 
-    result_df = result_df.merge(
-        df.add_suffix('_Origin'),
-        left_on="Origin_Index",
-        right_index=True,
+    return (
+        pd.DataFrame(combinations, columns=index_columns)
+        .merge(
+            df.add_suffix("_Origin"),
+            left_on="Origin_Index",
+            right_index=True,
+        )
+        .merge(
+            df.add_suffix("_Destination"),
+            left_on="Destination_Index",
+            right_index=True,
+        )
+        .drop(index_columns, axis=1)
     )
-
-    result_df = result_df.merge(
-        df.add_suffix('_Destination'),
-        left_on="Destination_Index",
-        right_index=True,
-    )
-
-    result_df = result_df.drop(index_columns, axis=1)
-    return result_df
 
 
 def run(path: str) -> None:
@@ -77,21 +68,19 @@ def run(path: str) -> None:
         df["Latitude_Origin"],
         df["Longitude_Origin"],
         df["Latitude_Destination"],
-        df["Longitude_Destination"]
+        df["Longitude_Destination"],
     )
     end_time = time.perf_counter()
     print(f"Calc time: {end_time - start_time:.20f}")
 
+    output_path = outputs.get_output_path(path)
     df = pd.concat([df, pd.Series(distances)], axis=1)
-    df = df.drop(
+    df.drop(
         [
             "Latitude_Origin",
             "Longitude_Origin",
             "Latitude_Destination",
-            "Longitude_Destination"
+            "Longitude_Destination",
         ],
-        axis=1
-    )
-
-    output_path = outputs.get_output_path(path)
-    df.to_csv(output_path, index=False, header=False)
+        axis=1,
+    ).to_csv(output_path, index=False, header=False)

@@ -19,20 +19,3 @@ class QueueProtocol(Protocol[_T]):
 
     def task_done(self) -> None:
         ...
-
-
-class AsyncQueueProtocol(Protocol[_T]):
-    async def get(self) -> _T:
-        ...
-
-    def empty(self) -> bool:
-        ...
-
-    async def join(self) -> None:
-        ...
-
-    async def put(self, value: _T) -> None:
-        ...
-
-    def task_done(self) -> None:
-        ...
