@@ -4,7 +4,7 @@ from typing import Final, Protocol
 from .models.coordinates import Coordinates
 
 
-_DEFAULT_EARTH_RADIUS_KM: Final = 6371.0088
+DEFAULT_EARTH_RADIUS_KM: Final = 6371.0088
 
 
 class DistanceCalculator(Protocol):
@@ -12,7 +12,7 @@ class DistanceCalculator(Protocol):
         ...
 
 
-def haversine(earth_radius_km: float = _DEFAULT_EARTH_RADIUS_KM) -> DistanceCalculator:
+def haversine(earth_radius_km: float = DEFAULT_EARTH_RADIUS_KM) -> DistanceCalculator:
     def calculate(p1: Coordinates, p2: Coordinates) -> float:
         lat1 = radians(p1.latitude)
         lng1 = radians(p1.longitude)
@@ -30,7 +30,7 @@ def haversine(earth_radius_km: float = _DEFAULT_EARTH_RADIUS_KM) -> DistanceCalc
     return calculate
 
 
-def equirectangular(earth_radius_km: float = _DEFAULT_EARTH_RADIUS_KM) -> DistanceCalculator:
+def equirectangular(earth_radius_km: float = DEFAULT_EARTH_RADIUS_KM) -> DistanceCalculator:
     def calculate(p1: Coordinates, p2: Coordinates) -> float:
         lat1 = radians(p1.latitude)
         lng1 = radians(p1.longitude)
