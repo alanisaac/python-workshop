@@ -4,17 +4,72 @@
 #
 #    pip-compile setup.cfg
 #
+click==8.1.2
+    # via distributed
+cloudpickle==2.0.0
+    # via
+    #   dask
+    #   distributed
+colorama==0.4.4
+    # via click
+dask==2022.4.1
+    # via
+    #   distance-matrix (setup.cfg)
+    #   distributed
+distributed==2022.4.1
+    # via distance-matrix (setup.cfg)
+fsspec==2022.3.0
+    # via dask
+heapdict==1.0.1
+    # via zict
+jinja2==3.1.1
+    # via distributed
+locket==1.0.0
+    # via partd
+markupsafe==2.1.1
+    # via jinja2
+msgpack==1.0.3
+    # via distributed
 numpy==1.22.3
     # via pandas
+packaging==21.3
+    # via
+    #   dask
+    #   distributed
 pandas==1.4.2
     # via distance-matrix (setup.cfg)
+partd==1.2.0
+    # via dask
+psutil==5.9.0
+    # via distributed
 pydantic==1.9.0
     # via distance-matrix (setup.cfg)
+pyparsing==3.0.8
+    # via packaging
 python-dateutil==2.8.2
     # via pandas
 pytz==2022.1
     # via pandas
+pyyaml==6.0
+    # via
+    #   dask
+    #   distributed
 six==1.16.0
     # via python-dateutil
+sortedcontainers==2.4.0
+    # via distributed
+tblib==1.7.0
+    # via distributed
+toolz==0.11.2
+    # via
+    #   dask
+    #   distributed
+    #   partd
+tornado==6.1
+    # via distributed
 typing-extensions==4.1.1
     # via pydantic
+urllib3==1.26.9
+    # via distributed
+zict==2.1.0
+    # via distributed
