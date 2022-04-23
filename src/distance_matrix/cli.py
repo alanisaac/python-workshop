@@ -1,10 +1,22 @@
 import argparse
+from enum import Enum
+
+
+class Runner(Enum):
+    STANDARD = 'standard'
+    ASYNCIO = 'asyncio'
+    PANDAS = 'pandas'
+
+    def __str__(self):
+        return self.value
 
 
 def _get_arg_parser() -> argparse.ArgumentParser:
     arg_parser = argparse.ArgumentParser()
-    arg_parser.add_argument("-a", "--asyncio", action='store_true')
     arg_parser.add_argument("input", nargs=1)
+    arg_parser.add_argument(
+        "-r", "--runner", type=Runner, choices=list(Runner), default=Runner.STANDARD
+    )
     return arg_parser
 
 

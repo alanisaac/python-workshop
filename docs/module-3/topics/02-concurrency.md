@@ -122,7 +122,7 @@ So instead in this demo, we're going to fake some I/O bound work.  But first, le
 
 ```sh
 python -m distance_matrix tests/integration/data/five_locations.csv
-python -m distance_matrix tests/integration/data/five_locations.csv --asyncio
+python -m distance_matrix tests/integration/data/five_locations.csv -r asyncio
 ```
 
 The `asyncio` version should take slightly longer to run, as we haven't introduced any fake I/O-bound work.  Let's look at the implementation in [async_runner.py](../../../src/distance_matrix/async_runner.py):
@@ -156,7 +156,7 @@ This pretends we have half a second of I/O work per row both reading and writing
 
 ```sh
 python -m distance_matrix tests/integration/data/five_locations.csv
-python -m distance_matrix tests/integration/data/five_locations.csv --asyncio
+python -m distance_matrix tests/integration/data/five_locations.csv -r asyncio
 ```
 
 Which is faster now?

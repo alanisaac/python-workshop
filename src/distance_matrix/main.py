@@ -8,6 +8,7 @@ from . import cli
 from . import executors
 from . import inputs
 from . import outputs
+from . import pandas_runner
 
 
 def run(path: str) -> None:
@@ -29,10 +30,16 @@ def main() -> int:
     path = args.input[0]
 
     start_time = time.perf_counter()
-    if args.asyncio:
-        asyncio.run(async_runner.run(path))
-    else:
+
+    if args.runner == cli.Runner.STANDARD:
         run(path)
+    elif args.runner == cli.Runner.ASYNCIO:
+        asyncio.run(async_runner.run(path))
+    elif args.runner == cli.Runner.PANDAS:
+        pandas_runner.run(path)
+    else:
+        raise ValueError(f"The runner '{args.runner}' is not supported")
+
     end_time = time.perf_counter()
     print(f"Total time: {end_time - start_time}")
     return 0
