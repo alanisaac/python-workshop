@@ -1,4 +1,5 @@
 import dask.dataframe as dd
+from dask.distributed import Client, LocalCluster
 import numpy as np
 import pandas as pd
 import pathlib
@@ -15,6 +16,11 @@ def coerce_path(path_str: str) -> str:
 
 
 def run(path: str) -> None:
+    cluster = LocalCluster()
+    _ = Client(cluster)
+
+    input(f"Press enter to continue, see dashboard at {cluster.dashboard_link}\n")
+
     df = pd.read_csv(path, names=np.array(["City", "Latitude", "Longitude"]))
     df = permutations(df)
     df = dd.from_pandas(df, npartitions=4)
@@ -43,3 +49,4 @@ def run(path: str) -> None:
         ],
         axis=1,
     ).to_csv(output_path, index=False, header=False)
+    input("Press enter to terminate\n")

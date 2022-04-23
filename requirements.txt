@@ -4,6 +4,8 @@
 #
 #    pip-compile setup.cfg
 #
+bokeh==2.4.2
+    # via distance-matrix (setup.cfg)
 click==8.1.2
     # via distributed
 cloudpickle==2.0.0
@@ -23,7 +25,9 @@ fsspec==2022.3.0
 heapdict==1.0.1
     # via zict
 jinja2==3.1.1
-    # via distributed
+    # via
+    #   bokeh
+    #   distributed
 locket==1.0.0
     # via partd
 markupsafe==2.1.1
@@ -31,15 +35,20 @@ markupsafe==2.1.1
 msgpack==1.0.3
     # via distributed
 numpy==1.22.3
-    # via pandas
+    # via
+    #   bokeh
+    #   pandas
 packaging==21.3
     # via
+    #   bokeh
     #   dask
     #   distributed
 pandas==1.4.2
     # via distance-matrix (setup.cfg)
 partd==1.2.0
     # via dask
+pillow==9.1.0
+    # via bokeh
 psutil==5.9.0
     # via distributed
 pydantic==1.9.0
@@ -52,6 +61,7 @@ pytz==2022.1
     # via pandas
 pyyaml==6.0
     # via
+    #   bokeh
     #   dask
     #   distributed
 six==1.16.0
@@ -66,9 +76,13 @@ toolz==0.11.2
     #   distributed
     #   partd
 tornado==6.1
-    # via distributed
+    # via
+    #   bokeh
+    #   distributed
 typing-extensions==4.1.1
-    # via pydantic
+    # via
+    #   bokeh
+    #   pydantic
 urllib3==1.26.9
     # via distributed
 zict==2.1.0
