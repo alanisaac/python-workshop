@@ -200,6 +200,7 @@ There's a quote attributed to Donald Knuth, author of _The Art of Computer Progr
 The Python ecosystem has a number of tools you can use for performance profiling.  We won't cover them in detail, but if you find yourself needing to improve performance of Python code, check them out:
 
 - `profile` and `cProfile` ([docs](https://docs.python.org/3/library/profile.html)): Python's built-in profilers
+  - [snakeviz]([GitHub](https://github.com/jiffyclub/snakeviz/)) can visualize cProfile results in a flame graph
 - `pyinstrument` ([GitHub](https://github.com/joerick/pyinstrument)): another simple profiler, supports `asyncio` and has more helpful output
 - `py-spy` ([GitHub](https://github.com/benfred/py-spy)): does not require modifying your code, supports generating a flame graph
 - `scalene` ([GitHub](https://github.com/plasma-umass/scalene)): known for speed and an embedded GUI
