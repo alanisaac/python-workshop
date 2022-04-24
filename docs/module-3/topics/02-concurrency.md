@@ -1,5 +1,9 @@
 # Asynchronous & Parallel Programming
 
+![Concurrency](https://geekandpoke.typepad.com/.a/6a00d8341d3df553ef017c31a16a73970b-800wi)
+
+_[credit: geek & poke](https://geekandpoke.typepad.com/geekandpoke/2012/09/simply-explained-concurrency.html) ([CC BY 3.0](https://creativecommons.org/licenses/by/3.0/))_
+
 Before we get into parallel programming, it's good to define the terminology we'll use to talk about it.  Asynchronous, concurrent, and parallel execution are all related terms but have different meanings.  Explanations around the internet [vary slightly](https://stackoverflow.com/questions/4844637/what-is-the-difference-between-concurrency-parallelism-and-asynchronous-methods), but these are the most common:
 
 - **Parallel**: multiple tasks are executed at the same time
