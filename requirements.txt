@@ -34,16 +34,25 @@ markupsafe==2.1.1
     # via jinja2
 msgpack==1.0.3
     # via distributed
+mypy-extensions==0.4.3
+    # via typing-inspect
 numpy==1.22.3
     # via
     #   bokeh
     #   pandas
+    #   pandera
+    #   pyarrow
 packaging==21.3
     # via
     #   bokeh
     #   dask
     #   distributed
+    #   pandera
 pandas==1.4.2
+    # via
+    #   distance-matrix (setup.cfg)
+    #   pandera
+pandera==0.10.1
     # via distance-matrix (setup.cfg)
 partd==1.2.0
     # via dask
@@ -51,8 +60,12 @@ pillow==9.1.0
     # via bokeh
 psutil==5.9.0
     # via distributed
+pyarrow==7.0.0
+    # via pandera
 pydantic==1.9.0
-    # via distance-matrix (setup.cfg)
+    # via
+    #   distance-matrix (setup.cfg)
+    #   pandera
 pyparsing==3.0.8
     # via packaging
 python-dateutil==2.8.2
@@ -83,7 +96,12 @@ typing-extensions==4.1.1
     # via
     #   bokeh
     #   pydantic
+    #   typing-inspect
+typing-inspect==0.7.1
+    # via pandera
 urllib3==1.26.9
     # via distributed
+wrapt==1.14.0
+    # via pandera
 zict==2.1.0
     # via distributed
