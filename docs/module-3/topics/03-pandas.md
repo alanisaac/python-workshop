@@ -65,13 +65,61 @@ The following tips are mainly summarized from [Modern Pandas series by Tom Augsp
 
 ## Recommended Dependencies
 
-_TODO_
+`pandas` [recommends](https://pandas.pydata.org/docs/getting_started/install.html#recommended-dependencies) installing the following dependencies:
+
+- `numexpr`: for accelerating certain numerical operations, as an alternative to `numpy`. `numexpr` uses multiple cores as well as smart chunking and caching to achieve large speedups.  Be aware that whether `numexpr` is faster than `numpy` can [depend on use case](https://github.com/pydata/numexpr/issues/301#issuecomment-388097698).
+- `bottleneck`: for accelerating certain types of `nan` evaluations. bottleneck uses specialized cython routines to achieve large speedups.
 
 Note that we're also using the `pandas-stubs` library ([GitHub](https://github.com/VirtusLab/pandas-stubs)) to provide type checking stubs for `pandas`.
 
 > Note: stub libraries aren't perfect, and `pandas-stubs` has a lot of ground to cover.  If you have a keen eye, you might have spotted that our code is working around an [open typing issue](https://github.com/VirtusLab/pandas-stubs/issues/170) with `read_csv`.
 
-See also: [Pandas Recommended Dependencies](https://pandas.pydata.org/docs/getting_started/install.html#recommended-dependencies)
+### Schemas
+
+Back in [module 2](../../module-2/topics/03-domain-modeling.md), we talked about using `pydantic` for validation.  In the `pandas` approach we've used so far, we don't have any validation code.
+
+We _could_ iterate through our loaded dataframe and instantiate the `pydantic`-driven `Coordinates` classes as a means of validation.  But above, we just said vectorization is a good best practice for `pandas`.  Is there a way we can do both?
+
+`pandera` ([GitHub](https://github.com/pandera-dev/pandera)) is a library that allows you to validate tabular data in `pandas` dataframes.  To get started, install `pandera` (if you don't already have it):
+
+```sh
+pip install pandera
+```
+
+Next take a look at the schema in [input.py](../../../src/distance_matrix/models/input.py).  This uses the `SchemaModel` syntax, which is inspired by `pydantic`, to represent a dataframe schema.  Let's incorporate this into our `pandas` runner pipeline by importing it and creating a `validate` function (to aid with `pipe`):
+
+```py
+from .models.input import InputSchema
+
+...
+
+def validate(df: pd.DataFrame) -> pd.DataFrame:
+    InputSchema.validate(df)
+    return df
+```
+
+Then add `validate` to our pipeline, right after reading the csv:
+
+```py
+(
+    pd.read_csv(path, names=np.array(["City", "Latitude", "Longitude"]))
+    .pipe(validate) # add here
+    .pipe(permutations)
+    .pipe(calculate, calculator, columns)
+    .drop(columns, axis=1)
+    .to_csv(output_path, index=False, header=False)
+)
+```
+
+That's it!  Let's make sure we're validating.  Modify one of our input csv files to break validation, and re-run the `pandas` runner on that file.  The output tells you the column name, violated rule, and offending value.  For example:
+
+```py
+pandera.errors.SchemaError: <Schema Column(name=Longitude, type=DataType(float64))> failed element-wise validator 0:
+<Check greater_than_or_equal_to: greater_than_or_equal_to(-180)>
+failure cases:
+   index  failure_case
+0      1   -1111.73854
+```
 
 ## Dask
 
