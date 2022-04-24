@@ -174,7 +174,39 @@ See also:
 
 ## Multiprocessing
 
-_TODO_
+So `asyncio` is a good way to deal with I/O bound work.  What if your work is CPU-bound?
+
+In lieu of the ability to use threads for Python parallelism, we can instead use processes with the **multiprocessing** module ([docs](https://docs.python.org/3/library/multiprocessing.html)).  Multiprocessing has an extremely similar API to threading, but spawns additional processes rather than threads.
+
+Open up [executors.py](../../../src/distance_matrix/executors.py) and look at the implementation of `multiprocessing_executor`.  Notice how similar it is to `threaded_executor` (nearly a copy-paste), but with `Process` instead of `Thread` and a queue type pulled from the `multiprocessing` module instead. 
+
+As with the other threading implementations, let's switch out our executor:
+
+```py
+executor = executors.multiprocessing_executor(calculator)
+```
+
+We can once again try running this with:
+
+```sh
+python -m distance_matrix tests/integration/data/five_locations.csv
+```
+
+But if you do, you'll encounter an error!  One additional difference is that the multiprocessing executor is using the class-based `DistanceCalculator` rather than the function.  We can fix it up by swapping out our import and calculator variable in [main.py](../../../src/distance_matrix/main.py) like so:
+
+```py
+from .calculators.objects import HaversineCalculator
+
+...
+
+calculator = HaversineCalculator()
+```
+
+Try running it again, and you should see multiprocessing spit out the same output file.
+
+But why the change?  Multiprocessing uses a binary serialization format for Python objects called `pickle` ([docs](https://docs.python.org/3/library/pickle.html)).  Unfortunately, [pickle can't handle nested functions](https://stackoverflow.com/questions/8804830/python-multiprocessing-picklingerror-cant-pickle-type-function), which is why we've switched out our class based approach instead.
+
+> The `multiprocess` library ([GitHub](https://github.com/uqfoundation/multiprocess)) is a fork of `multiprocessing` that uses the improved library `dill` ([GitHub](https://github.com/uqfoundation/dill)) for serialization instead of `pickle`.  That library can handle nested functions.
 
 ## Wrapping Up
 
@@ -189,13 +221,15 @@ In the next topic, we'll dive into other libraries used for fast number crunchin
 
 One final note.  In all of these cases, we've been discussing different approaches for scaling up our code, but we haven't paid special attention to _where we need performance_.
 
-There's a quote attributed to Donald Knuth, author of _The Art of Computer Programming_, that "premature optimization is the root of all evil".  
+There's a quote attributed to Donald Knuth, author of _The Art of Computer Programming_, that "premature optimization is the root of all evil".
 
 > There is no doubt that the grail of efficiency leads to abuse. Programmers waste enormous amounts of time thinking about, or worrying about, the speed of noncritical parts of their programs, and these attempts at efficiency actually have a strong negative impact when debugging and maintenance are considered. We should forget about small efficiencies, say about 97% of the time: premature optimization is the root of all evil.
 > 
 > Yet we should not pass up our opportunities in that critical 3%. A good programmer will not be lulled into complacency by such reasoning, he will be wise to look carefully at the critical code; but only after that code has been identified. It is often a mistake to make a priori judgements about what parts of a program are really critical, since the universal experience of programmers who have been using measurement tools has been that their intuitive guesses fail.
 
-[In other words](https://softwareengineering.stackexchange.com/a/80092), in the absence of measured performance issues you shouldn't optimize because you **think** you will get a performance gain.  Prove it!
+[In other words](https://softwareengineering.stackexchange.com/a/80092), in the absence of measured performance issues you shouldn't optimize because you **think** you will get a performance gain.  Parallelism is difficult to write and even more difficult to debug.  Be judicious about weighing the value it provides vs the cost of maintenance.
+
+And when you're looking to optimize code, prove that it makes a difference!
 
 The Python ecosystem has a number of tools you can use for performance profiling.  We won't cover them in detail, but if you find yourself needing to improve performance of Python code, check them out:
 
